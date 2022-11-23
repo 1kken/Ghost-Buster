@@ -2,6 +2,6 @@
 A ghost shooting game
 
 ## TO-DO
-[] Build structure [Gameframe,Gamestate,Gameloop]
+[x] Build structure [Gameframe,Gamestate,Gameloop]
 [] Spawn Ghost & Friendly ghost at random location
 [] Shoot ghost
