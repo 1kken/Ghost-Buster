@@ -7,6 +7,6 @@ public class Frame extends JFrame  {
       setTitle("GHOST BUSTER");
       setVisible(true);
       pack();
-      this.setLocationRelativeTo(null);
+      setLocationRelativeTo(null);
     } 
 }
