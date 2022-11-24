@@ -28,7 +28,7 @@ public class Enemy extends Rectangle {
         if (this.x >= GamePanel.SCREEN_WIDTH - GHOST.getWidth(null) || this.x <= 0) {
             this.xSpeed = xSpeed * -1;
         }
-        if (this.y >= GamePanel.SCREEN_HEIGHT - GHOST.getHeight(null) || this.y <= 0) {
+        if (this.y >= GamePanel.SCREEN_HEIGHT - 300 || this.y <= 0) {
             this.ySpeed = ySpeed * -1;
         }
         this.x += xSpeed;
@@ -40,6 +40,6 @@ public class Enemy extends Rectangle {
     }
 
     private int locRandY() {
-        return (int) (Math.random() * GamePanel.SCREEN_HEIGHT) + GHOST.getHeight(null);
+        return (int) (Math.random() * GamePanel.SCREEN_HEIGHT - 300) + GHOST.getHeight(null);
     }
 }

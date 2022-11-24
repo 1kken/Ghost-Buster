@@ -52,7 +52,7 @@ public class GamePanel extends JPanel implements ActionListener {
         //ADD TO FRAME (17ms)
         FRAME+=1;
         Control.getMousePosition(this);
-        if(FRAME % 5 == 0){
+        if(FRAME % 3 == 0){
             enemy.update();
         }
         repaint();
