@@ -8,13 +8,13 @@ import frame.GamePanel;
 
 public class Enemy extends Rectangle {
     // GHOST DIRECTION
-    int xSpeed = 10;
-    int ySpeed = 10;
+    int xSpeed = 30;
+    int ySpeed = 30;
     Image GHOST;
 
     public Enemy() {
         GHOST = new ImageIcon(this.getClass().getResource("resource/ghost.png")).getImage();
-        this.y = locRandY();
+        this.y = 300;
         this.x = locRandX();
         this.height = 50;
         this.width = 50;
@@ -39,7 +39,7 @@ public class Enemy extends Rectangle {
         return (int) (Math.random() * GamePanel.SCREEN_WIDTH) + GHOST.getWidth(null);
     }
 
-    private int locRandY() {
-        return (int) (Math.random() * GamePanel.SCREEN_HEIGHT - 300) + GHOST.getHeight(null);
-    }
+    //private int locRandY() {
+        //return (int) (Math.random() * GamePanel.SCREEN_HEIGHT - 300) + GHOST.getHeight(null);
+    //}
 }
