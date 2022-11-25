@@ -8,16 +8,16 @@ import frame.GamePanel;
 
 public class Enemy extends Rectangle {
     // GHOST DIRECTION
-    int xSpeed = 30;
-    int ySpeed = 30;
+    int xSpeed = 5;
+    int ySpeed = 5;
     Image GHOST;
 
     public Enemy() {
         GHOST = new ImageIcon(this.getClass().getResource("resource/ghost.png")).getImage();
         this.y = 300;
         this.x = locRandX();
-        this.height = 50;
-        this.width = 50;
+        this.height = 100;
+        this.width = 100;
     }
 
     public void draw(Graphics2D g) {

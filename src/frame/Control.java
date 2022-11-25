@@ -8,6 +8,6 @@ public class Control {
         Point p = MouseInfo.getPointerInfo().getLocation();
         SwingUtilities.convertPointFromScreen(p, panel);
         GamePanel.playerLocX = (int) p.getX();
-        GamePanel.playerLocy = (int) p.getY();
+        GamePanel.playerLocY = (int) p.getY();
     }
 }
