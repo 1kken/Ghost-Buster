@@ -4,12 +4,13 @@ import java.awt.event.*;
 import javax.swing.*;
 
 import entities.Enemy;
+import entities.Player;
 import entities.Bullet;
 
 import java.awt.*;
 
 public class GamePanel extends JPanel implements ActionListener {
-    //ENTITIES IMAGE
+    // ENTITIES IMAGE
     Image AIM;
     // SCREEN SIZE & BACKGROUND
     Image BACKGROUND;
@@ -22,6 +23,7 @@ public class GamePanel extends JPanel implements ActionListener {
 
     // ENTITITES VARIABLE
     Bullet bullet;
+    Player player = new Player();
     Enemy enemy = new Enemy();
 
     // PLAYER MOUSE POSITION
@@ -48,7 +50,8 @@ public class GamePanel extends JPanel implements ActionListener {
         Graphics2D g2 = (Graphics2D) g;
         g2.drawImage(BACKGROUND, 0, 0, null);
         enemy.draw(g2);
-        g2.drawImage(AIM, playerLocX-32, playerLocY-32, null);
+        player.draw(g2);
+        g2.drawImage(AIM, playerLocX - 32, playerLocY - 32, null);
     }
 
     @Override
@@ -64,13 +67,25 @@ public class GamePanel extends JPanel implements ActionListener {
             repaint();
         }
 
-        //this is a mouse listener
+        addKeyListener(new KeyAdapter(){
+            @Override
+            public void keyPressed(KeyEvent e){
+                if(e.getKeyCode() == 65){
+                    player.update(65);
+                }
+                if(e.getKeyCode() == 68){
+                    player.update(68);
+                }
+            }
+        });
+
+        // this is a mouse listener
         addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
                 bullet = new Bullet(e.getX(), e.getY());
                 if (bullet.intersects(enemy)) {
-                    JOptionPane.showMessageDialog(null, "caught");
+                    enemy = new Enemy();
                 }
             }
         });

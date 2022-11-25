@@ -2,7 +2,9 @@ package frame;
 import javax.swing.JFrame;
 public class Frame extends JFrame  {
     public Frame(){
-      add(new GamePanel());
+      GamePanel gamePanel = new GamePanel();
+      gamePanel.setFocusable(true);
+      add(gamePanel);
       setDefaultCloseOperation(EXIT_ON_CLOSE);
       setTitle("GHOST BUSTER");
       setVisible(true);
