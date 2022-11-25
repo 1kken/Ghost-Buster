@@ -9,11 +9,10 @@ import entities.Bullet;
 
 import java.awt.*;
 
-public class GamePanel extends JPanel implements ActionListener {
-    // ENTITIES IMAGE
-    Image AIM;
-    // SCREEN SIZE & BACKGROUND
+public class GamePanel extends JPanel {
+    // SCREEN SIZE & BACKGROUND & etc..
     Image BACKGROUND;
+    Image AIM;
     public static final int SCREEN_WIDTH = 1300;
     public static final int SCREEN_HEIGHT = 600;
 
@@ -32,17 +31,19 @@ public class GamePanel extends JPanel implements ActionListener {
 
     // GAME CONTRUCTOR
     public GamePanel() {
-        BACKGROUND = new ImageIcon(this.getClass().getResource("resource/bg.gif")).getImage();
-        AIM = new ImageIcon(this.getClass().getResource("resource/aim.png")).getImage();
-        setPreferredSize(new Dimension(SCREEN_WIDTH, SCREEN_HEIGHT));
-        setBackground(Color.black);
-        game_loop = new Timer(17, this);
-        gameStart();
-    }
+        // INITIALIZE IMAGES
+        initImages();
 
-    // GAME INITIALIZATION OR START
-    void gameStart() {
-        game_loop.start();
+        // SET SIZE OF GAME PANEL 
+        setPreferredSize(new Dimension(SCREEN_WIDTH, SCREEN_HEIGHT));
+
+        // INITIALIZE A 
+        ActionHandler actionHandler = new ActionHandler();
+        createListeners();
+
+        // this are for the game state
+        game_loop = new Timer(17, actionHandler);
+        gameStart();
     }
 
     // PAINT METHOD OF EVERY COMPONENTS
@@ -54,32 +55,25 @@ public class GamePanel extends JPanel implements ActionListener {
         g2.drawImage(AIM, playerLocX - 32, playerLocY - 32, null);
     }
 
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        // this filters out if the source is a timer
-        if (e.getSource() == game_loop) {
-            // ADD TO FRAME (17ms)
-            FRAME += 1;
-            Control.getMousePosition(this);
-            if (FRAME % 3 == 0) {
-                enemy.update();
-            }
-            repaint();
-        }
+    ////////////////////////////////////////////////////////////////////////
+    /////////////// DECLARATION OF INNER CLASSES & ETC..///////////////////
+    ///////////////////////////////////////////////////////////////////////
+    private void createListeners() {
 
-        addKeyListener(new KeyAdapter(){
+        //THIS IS FOR THE KEYLISTENER
+        addKeyListener(new KeyAdapter() {
             @Override
-            public void keyPressed(KeyEvent e){
-                if(e.getKeyCode() == 65){
+            public void keyPressed(KeyEvent e) {
+                if (e.getKeyCode() == 65) {
                     player.update(65);
                 }
-                if(e.getKeyCode() == 68){
+                if (e.getKeyCode() == 68) {
                     player.update(68);
                 }
             }
         });
 
-        // this is a mouse listener
+        // THIS IS FOR THE MOUSE LISTENER
         addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
@@ -89,5 +83,31 @@ public class GamePanel extends JPanel implements ActionListener {
                 }
             }
         });
+    }
+
+    // INNER CLASS FOR THE TIMER
+    public class ActionHandler implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            FRAME += 1;
+            Control.getMousePosition(GamePanel.this);
+            if (FRAME % 3 == 0) {
+                enemy.update();
+            }
+            repaint();
+        }
+    }
+
+    ///////////////////////////////////////////////////////////
+    /////////// MISCELLANOUS///////////////////////////////////
+    /////////////////////////////////////////////////////////
+    private void initImages() {
+        BACKGROUND = new ImageIcon(this.getClass().getResource("resource/bg.gif")).getImage();
+        AIM = new ImageIcon(this.getClass().getResource("resource/aim.png")).getImage();
+    }
+
+    // GAME INITIALIZATION OR START
+    void gameStart() {
+        game_loop.start();
     }
 }

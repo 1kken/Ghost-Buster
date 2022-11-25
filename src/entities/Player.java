@@ -2,7 +2,7 @@ package entities;
 import java.awt.*;
 import frame.GamePanel;
 public class Player extends Rectangle {
-   int speed = 1;
+   int speed = 10;
    public Player(){
     this.x = 650 ;
     this.y = GamePanel.SCREEN_HEIGHT - 100;
