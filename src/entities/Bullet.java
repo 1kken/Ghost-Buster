@@ -5,17 +5,20 @@ import java.awt.*;
 import frame.GamePanel;
 
 public class Bullet extends Rectangle {
-    int xVelocity = 5;
-    int yVelocity = 5;
+    double speed = 10.0;
+    double xVelocity;
+    double yVelocity;
+    double angle;
 
     public Bullet(int x, int y) {
         this.x = x;
         this.y = y;
         this.height = 10;
         this.width = 10;
-        if (GamePanel.playerLocX <= this.x) {
-            xVelocity *= -1;
-        }
+        // calculate the distance between mouse and origin
+        angle = Math.atan2(GamePanel.aimLocY - this.y, GamePanel.aimLocX - this.x);
+        xVelocity = (speed) * Math.cos(angle);
+        yVelocity = (speed) * Math.sin(angle);
     }
 
     public void draw(Graphics2D g) {
@@ -23,9 +26,7 @@ public class Bullet extends Rectangle {
     }
 
     public void update() {
-        if(xVelocity <= 0 || xVelocity >= 0){
-            this.x += xVelocity;
-        }
-        this.y -= yVelocity;
+        this.x += xVelocity;
+        this.y += yVelocity;
     }
 }

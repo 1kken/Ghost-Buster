@@ -30,8 +30,8 @@ public class GamePanel extends JPanel {
     Enemy enemy = new Enemy();
 
     // PLAYER MOUSE POSITION
-    public static int playerLocX = 0;
-    public static int playerLocY = 0;
+    public static int aimLocX = 0;
+    public static int aimLocY = 0;
 
     // GAME CONTRUCTOR
     public GamePanel() {
@@ -59,12 +59,14 @@ public class GamePanel extends JPanel {
         for (Bullet bullet : bullets) {
             bullet.draw(g2);
         }
-        g2.drawImage(AIM, playerLocX - 32, playerLocY - 32, null);
+        g2.drawImage(AIM, aimLocX - 32, aimLocY - 32, null);
     }
 
     ////////////////////////////////////////////////////////////////////////
     /////////////// DECLARATION OF INNER CLASSES & ETC..///////////////////
     ///////////////////////////////////////////////////////////////////////
+    int SHOOT = 0;
+
     private void createListeners() {
 
         // THIS IS FOR THE KEYLISTENER
@@ -84,7 +86,12 @@ public class GamePanel extends JPanel {
         addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
-                bullet = new Bullet((int) player.getCenterX(), (int) player.getCenterY());
+                SHOOT = 1;
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+                SHOOT = 0;
             }
         });
     }
@@ -95,12 +102,12 @@ public class GamePanel extends JPanel {
         public void actionPerformed(ActionEvent e) {
             FRAME += 1;
             Control.getMousePosition(GamePanel.this);
-            // CREATING AN INSTANCE OF BULLET
-            if (FRAME % 10 == 0) {
-                bullets.add(new Bullet((int) player.getCenterX(), (int) player.getCenterY()));
-            }
             if (FRAME % 3 == 0) {
                 enemy.update();
+            }
+            // spaw bullets
+            if (FRAME % 5 == 0 && SHOOT == 1) {
+                bullets.add(new Bullet((int) player.getCenterX(), (int) player.getCenterY()));
             }
             // updating bullets
             for (Bullet bullet : bullets) {
