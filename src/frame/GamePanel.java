@@ -1,7 +1,10 @@
 package frame;
 
 import java.awt.event.*;
+
+import javax.sound.sampled.LineEvent;
 import javax.swing.*;
+import java.util.LinkedList;
 
 import entities.Enemy;
 import entities.Player;
@@ -22,6 +25,7 @@ public class GamePanel extends JPanel {
 
     // ENTITITES VARIABLE
     Bullet bullet;
+    LinkedList<Bullet> bullets = new LinkedList<Bullet>();
     Player player = new Player();
     Enemy enemy = new Enemy();
 
@@ -34,10 +38,10 @@ public class GamePanel extends JPanel {
         // INITIALIZE IMAGES
         initImages();
 
-        // SET SIZE OF GAME PANEL 
+        // SET SIZE OF GAME PANEL
         setPreferredSize(new Dimension(SCREEN_WIDTH, SCREEN_HEIGHT));
 
-        // INITIALIZE A 
+        // INITIALIZE A
         ActionHandler actionHandler = new ActionHandler();
         createListeners();
 
@@ -52,6 +56,9 @@ public class GamePanel extends JPanel {
         g2.drawImage(BACKGROUND, 0, 0, null);
         enemy.draw(g2);
         player.draw(g2);
+        for (Bullet bullet : bullets) {
+            bullet.draw(g2);
+        }
         g2.drawImage(AIM, playerLocX - 32, playerLocY - 32, null);
     }
 
@@ -60,7 +67,7 @@ public class GamePanel extends JPanel {
     ///////////////////////////////////////////////////////////////////////
     private void createListeners() {
 
-        //THIS IS FOR THE KEYLISTENER
+        // THIS IS FOR THE KEYLISTENER
         addKeyListener(new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent e) {
@@ -77,10 +84,7 @@ public class GamePanel extends JPanel {
         addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
-                bullet = new Bullet(e.getX(), e.getY());
-                if (bullet.intersects(enemy)) {
-                    enemy = new Enemy();
-                }
+                bullet = new Bullet((int) player.getCenterX(), (int) player.getCenterY());
             }
         });
     }
@@ -91,8 +95,16 @@ public class GamePanel extends JPanel {
         public void actionPerformed(ActionEvent e) {
             FRAME += 1;
             Control.getMousePosition(GamePanel.this);
+            // CREATING AN INSTANCE OF BULLET
+            if (FRAME % 10 == 0) {
+                bullets.add(new Bullet((int) player.getCenterX(), (int) player.getCenterY()));
+            }
             if (FRAME % 3 == 0) {
                 enemy.update();
+            }
+            // updating bullets
+            for (Bullet bullet : bullets) {
+                bullet.update();
             }
             repaint();
         }
