@@ -21,7 +21,8 @@ public class GamePanel extends JPanel {
 
     // GAME STATE VARIABLES
     Timer game_loop;
-    int FRAME;
+    //FRAMES ARE LIKE A TIMER BUT GLOBAL
+    public int FRAME;
 
     // ENTITITES VARIABLE
     Bullet bullet;
@@ -45,26 +46,22 @@ public class GamePanel extends JPanel {
         ActionHandler actionHandler = new ActionHandler();
         createListeners();
 
-        // this are for the game state
+        //START THE GAME
         game_loop = new Timer(17, actionHandler);
         gameStart();
     }
 
-    // PAINT METHOD OF EVERY COMPONENTS
+    // PAINT METHOD FOR EVERY COMPONENTS
     public void paint(Graphics g) {
+        //CAST GRAPHIC OBJECT TO GRAPHICS 2D
         Graphics2D g2 = (Graphics2D) g;
-        g2.drawImage(BACKGROUND, getBgOffset(), -150, null);
-        enemy.draw(g2);
-        player.draw(g2);
-        for (Bullet bullet : bullets) {
-            bullet.draw(g2);
-        }
-        g2.drawImage(AIM, aimLocX - 32, aimLocY - 32, null);
+        display(g2);
     }
 
     ////////////////////////////////////////////////////////////////////////
     /////////////// DECLARATION OF INNER CLASSES & ETC..///////////////////
     ///////////////////////////////////////////////////////////////////////
+    // SHOOTING TRIGGER
     int SHOOT = 0;
 
     private void createListeners() {
@@ -123,22 +120,34 @@ public class GamePanel extends JPanel {
     }
 
     // GAME INITIALIZATION OR START
-    void gameStart() {
+    private void gameStart() {
         game_loop.start();
     }
 
+    // DRAWING METHOD
+    private void display(Graphics2D g2) {
+        g2.drawImage(BACKGROUND, getBgOffset(), -150, null);
+        enemy.draw(g2);
+        player.draw(g2);
+        for (Bullet bullet : bullets) {
+            bullet.draw(g2);
+        }
+        g2.drawImage(AIM, aimLocX - 32, aimLocY - 32, null);
+
+    }
+
     // MEMORY CLEANING
-    private void clear(){
-        System.out.println(bullets.size() + "");
-       bullets.removeIf(en -> en.y < -100 || en.y > SCREEN_HEIGHT + 100 || en.x < -100 || en.x > SCREEN_WIDTH); 
+    private void clear() {
+        final int MINIMUM = -100;
+        bullets.removeIf(en -> en.y < MINIMUM || en.y > SCREEN_HEIGHT + 100 || en.x < MINIMUM || en.x > SCREEN_WIDTH);
     }
 
     ////////////////////////////////////////////////////////////
-    ////////PARALLAX EFFECT////////////////////////////////////
+    //////// PARALLAX EFFECT////////////////////////////////////
     //////////////////////////////////////////////////////////
-    private int getBgOffset(){
+    private int getBgOffset() {
         int BGWIDTH = 1625;
         double coords = player.getX() / (SCREEN_WIDTH - player.getWidth());
-        return (int) -((BGWIDTH - SCREEN_WIDTH) *coords);
+        return (int) -((BGWIDTH - SCREEN_WIDTH) * coords);
     }
 }
