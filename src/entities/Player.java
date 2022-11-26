@@ -5,7 +5,7 @@ import frame.GamePanel;
 
 public class Player extends Rectangle {
     int speed = 0;
-    int maxSpeed = 5;
+    int maxSpeed = 3;
 
     public Player() {
         this.x = 650;

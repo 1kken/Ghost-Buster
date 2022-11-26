@@ -53,7 +53,7 @@ public class GamePanel extends JPanel {
     // PAINT METHOD OF EVERY COMPONENTS
     public void paint(Graphics g) {
         Graphics2D g2 = (Graphics2D) g;
-        g2.drawImage(BACKGROUND, 0, 0, null);
+        g2.drawImage(BACKGROUND, getBgOffset(), -150, null);
         enemy.draw(g2);
         player.draw(g2);
         for (Bullet bullet : bullets) {
@@ -109,6 +109,7 @@ public class GamePanel extends JPanel {
             }
 
             player.update();
+            clear();
             repaint();
         }
     }
@@ -124,5 +125,20 @@ public class GamePanel extends JPanel {
     // GAME INITIALIZATION OR START
     void gameStart() {
         game_loop.start();
+    }
+
+    // MEMORY CLEANING
+    private void clear(){
+        System.out.println(bullets.size() + "");
+       bullets.removeIf(en -> en.y < -100 || en.y > SCREEN_HEIGHT + 100 || en.x < -100 || en.x > SCREEN_WIDTH); 
+    }
+
+    ////////////////////////////////////////////////////////////
+    ////////PARALLAX EFFECT////////////////////////////////////
+    //////////////////////////////////////////////////////////
+    private int getBgOffset(){
+        int BGWIDTH = 1625;
+        double coords = player.getX() / (SCREEN_WIDTH - player.getWidth());
+        return (int) -((BGWIDTH - SCREEN_WIDTH) *coords);
     }
 }
