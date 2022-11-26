@@ -12,11 +12,14 @@ public class Bullet extends Rectangle {
 
     public Bullet(int x, int y) {
         this.x = x;
-        this.y = y;
+        this.y = y -32;
         this.height = 10;
         this.width = 10;
-        // calculate the distance between mouse and origin
+        // ARCTAN GETS THE ANGLE OF X AND Y
         angle = Math.atan2(GamePanel.aimLocY - this.y, GamePanel.aimLocX - this.x);
+
+        //MATCH THE X AND Y VELOCITY IN ORDER TO INTERSECT THE GIVEN POINT
+        //SEPARATE THE X & Y  VALUES
         xVelocity = (speed) * Math.cos(angle);
         yVelocity = (speed) * Math.sin(angle);
     }

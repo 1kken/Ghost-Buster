@@ -73,12 +73,6 @@ public class GamePanel extends JPanel {
         addKeyListener(new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent e) {
-                if (e.getKeyCode() == 65) {
-                    player.update(65);
-                }
-                if (e.getKeyCode() == 68) {
-                    player.update(68);
-                }
             }
         });
 
@@ -113,6 +107,8 @@ public class GamePanel extends JPanel {
             for (Bullet bullet : bullets) {
                 bullet.update();
             }
+
+            player.update();
             repaint();
         }
     }
