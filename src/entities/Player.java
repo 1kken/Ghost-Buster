@@ -4,8 +4,11 @@ import java.awt.*;
 import frame.GamePanel;
 
 public class Player extends Rectangle {
+    //====PLAYER POWER UPS=======
+    public int NUMOFBULLETS = 2;
+
     int speed = 0;
-    int maxSpeed = 3;
+    int maxSpeed = 2;
 
     public Player() {
         this.x = 650;
@@ -19,7 +22,7 @@ public class Player extends Rectangle {
     }
 
     public void update() {
-        if (GamePanel.aimLocX < 650) {
+        if (GamePanel.aimLocX < this.x) {
             speed -= 1;
             if (speed < -maxSpeed) {
                 speed = -maxSpeed;

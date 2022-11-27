@@ -5,5 +5,6 @@ A ghost shooting game
 ## TO-DO
 
 - [x] Build structure {Gameframe,Gamestate,Gameloop}
-- [x] bullet spawning
+- [x] Bullet spawning
+- [ ] Random enemy spawning
 - [ ] bullet collision

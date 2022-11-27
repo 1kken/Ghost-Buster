@@ -2,7 +2,6 @@ package frame;
 
 import java.awt.event.*;
 
-import javax.sound.sampled.LineEvent;
 import javax.swing.*;
 import java.util.LinkedList;
 
@@ -21,7 +20,7 @@ public class GamePanel extends JPanel {
 
     // GAME STATE VARIABLES
     Timer game_loop;
-    //FRAMES ARE LIKE A TIMER BUT GLOBAL
+    // FRAMES ARE LIKE A TIMER BUT GLOBAL
     public int FRAME;
 
     // ENTITITES VARIABLE
@@ -46,14 +45,14 @@ public class GamePanel extends JPanel {
         ActionHandler actionHandler = new ActionHandler();
         createListeners();
 
-        //START THE GAME
+        // START THE GAME
         game_loop = new Timer(17, actionHandler);
         gameStart();
     }
 
     // PAINT METHOD FOR EVERY COMPONENTS
     public void paint(Graphics g) {
-        //CAST GRAPHIC OBJECT TO GRAPHICS 2D
+        // CAST GRAPHIC OBJECT TO GRAPHICS 2D
         Graphics2D g2 = (Graphics2D) g;
         display(g2);
     }
@@ -96,9 +95,21 @@ public class GamePanel extends JPanel {
             if (FRAME % 3 == 0) {
                 enemy.update();
             }
-            // spaw bullets
+            // spawn BULLETS
+            int OFFSET = 3;
             if (FRAME % 5 == 0 && SHOOT == 1) {
-                bullets.add(new Bullet((int) player.getCenterX(), (int) player.getCenterY()));
+                    if(player.NUMOFBULLETS == 1){
+                        bullets.add(new Bullet((int) player.getCenterX(), (int) player.getCenterY(),0));
+                    }
+                    if(player.NUMOFBULLETS == 2){
+                        bullets.add(new Bullet((int) player.getCenterX(), (int) player.getCenterY(),0));
+                        bullets.add(new Bullet((int) player.getCenterX(), (int) player.getCenterY(),-OFFSET));
+                    }
+                    if(player.NUMOFBULLETS == 3){
+                        bullets.add(new Bullet((int) player.getCenterX(), (int) player.getCenterY(),0));
+                        bullets.add(new Bullet((int) player.getCenterX(), (int) player.getCenterY(),-OFFSET));
+                        bullets.add(new Bullet((int) player.getCenterX(), (int) player.getCenterY(),OFFSET));
+                    }
             }
             // updating bullets
             for (Bullet bullet : bullets) {
