@@ -56,6 +56,7 @@ public class GamePanel extends JPanel {
     public void paint(Graphics g) {
         // CAST GRAPHIC OBJECT TO GRAPHICS 2D
         Graphics2D g2 = (Graphics2D) g;
+        g2.setColor(Color.white);
         display(g2);
     }
 
@@ -194,7 +195,7 @@ public class GamePanel extends JPanel {
     //////// PARALLAX EFFECT////////////////////////////////////
     //////////////////////////////////////////////////////////
     private int getBgOffset() {
-        int BGWIDTH = 1625;
+        int BGWIDTH = 1645;
         double coords = player.getX() / (SCREEN_WIDTH - player.getWidth());
         return (int) -((BGWIDTH - SCREEN_WIDTH) * coords);
     }

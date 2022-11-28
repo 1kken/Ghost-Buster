@@ -1,6 +1,5 @@
 package entities.enemies;
 
-import java.awt.Color;
 import java.awt.Graphics2D;
 import java.util.Random;
 
@@ -17,7 +16,6 @@ public class EnemyMage extends Enemy {
 
     @Override
     public void draw(Graphics2D g) {
-        g.setColor(Color.blue);
         g.fillRect(x, y, width, height);
     }
 
