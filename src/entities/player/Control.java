@@ -1,6 +1,8 @@
-package frame;
+package entities.player;
 
 import javax.swing.*;
+
+import frame.GamePanel;
 
 import java.awt.*;
 

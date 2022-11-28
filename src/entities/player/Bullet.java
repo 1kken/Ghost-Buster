@@ -1,4 +1,4 @@
-package entities;
+package entities.player;
 
 import java.awt.*;
 

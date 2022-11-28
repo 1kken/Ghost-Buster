@@ -5,9 +5,12 @@ import java.awt.event.*;
 import javax.swing.*;
 import java.util.LinkedList;
 
-import entities.Enemy;
-import entities.Player;
-import entities.Bullet;
+import entities.enemies.Enemy;
+import entities.enemies.EnemyMage;
+import entities.enemies.EnemyNinja;
+import entities.player.Bullet;
+import entities.player.Control;
+import entities.player.Player;
 
 import java.awt.*;
 
@@ -24,10 +27,9 @@ public class GamePanel extends JPanel {
     public int FRAME;
 
     // ENTITITES VARIABLE
-    Bullet bullet;
     LinkedList<Bullet> bullets = new LinkedList<Bullet>();
+    LinkedList<Enemy> enemies = new LinkedList<Enemy>();
     Player player = new Player();
-    Enemy enemy = new Enemy();
 
     // PLAYER MOUSE POSITION
     public static int aimLocX = 0;
@@ -92,24 +94,37 @@ public class GamePanel extends JPanel {
         public void actionPerformed(ActionEvent e) {
             FRAME += 1;
             Control.getMousePosition(GamePanel.this);
-            if (FRAME % 3 == 0) {
+
+            // RATE OF ENEMY SPAWNS
+            // MAGE TYPE
+            if (FRAME % 60 == 0) {
+                enemies.add(new EnemyMage());
+            }
+            // ASSASIN TYPE
+            if (FRAME % 120 == 0) {
+                enemies.add(new EnemyNinja());
+            }
+            
+            //UPDATE ENEMY POSITION
+            for (Enemy enemy : enemies) {
                 enemy.update();
             }
+
             // spawn BULLETS
-            int OFFSET = 3;
+            int OFFSET = 2;
             if (FRAME % 5 == 0 && SHOOT == 1) {
-                    if(player.NUMOFBULLETS == 1){
-                        bullets.add(new Bullet((int) player.getCenterX(), (int) player.getCenterY(),0));
-                    }
-                    if(player.NUMOFBULLETS == 2){
-                        bullets.add(new Bullet((int) player.getCenterX(), (int) player.getCenterY(),0));
-                        bullets.add(new Bullet((int) player.getCenterX(), (int) player.getCenterY(),-OFFSET));
-                    }
-                    if(player.NUMOFBULLETS == 3){
-                        bullets.add(new Bullet((int) player.getCenterX(), (int) player.getCenterY(),0));
-                        bullets.add(new Bullet((int) player.getCenterX(), (int) player.getCenterY(),-OFFSET));
-                        bullets.add(new Bullet((int) player.getCenterX(), (int) player.getCenterY(),OFFSET));
-                    }
+                if (player.NUMOFBULLETS == 1) {
+                    bullets.add(new Bullet((int) player.getCenterX(), (int) player.getCenterY(), 0));
+                }
+                if (player.NUMOFBULLETS == 2) {
+                    bullets.add(new Bullet((int) player.getCenterX(), (int) player.getCenterY(), 0));
+                    bullets.add(new Bullet((int) player.getCenterX(), (int) player.getCenterY(), -OFFSET));
+                }
+                if (player.NUMOFBULLETS == 3) {
+                    bullets.add(new Bullet((int) player.getCenterX(), (int) player.getCenterY(), 0));
+                    bullets.add(new Bullet((int) player.getCenterX(), (int) player.getCenterY(), -OFFSET));
+                    bullets.add(new Bullet((int) player.getCenterX(), (int) player.getCenterY(), OFFSET));
+                }
             }
             // updating bullets
             for (Bullet bullet : bullets) {
@@ -138,7 +153,10 @@ public class GamePanel extends JPanel {
     // DRAWING METHOD
     private void display(Graphics2D g2) {
         g2.drawImage(BACKGROUND, getBgOffset(), -150, null);
-        enemy.draw(g2);
+        for (Enemy enemy : enemies) {
+            enemy.draw(g2);
+            ;
+        }
         player.draw(g2);
         for (Bullet bullet : bullets) {
             bullet.draw(g2);
@@ -151,6 +169,7 @@ public class GamePanel extends JPanel {
     private void clear() {
         final int MINIMUM = -100;
         bullets.removeIf(en -> en.y < MINIMUM || en.y > SCREEN_HEIGHT + 100 || en.x < MINIMUM || en.x > SCREEN_WIDTH);
+        enemies.removeIf(en -> en.x < MINIMUM || en.x > SCREEN_WIDTH);
     }
 
     ////////////////////////////////////////////////////////////

@@ -1,4 +1,4 @@
-package entities;
+package entities.player;
 
 import java.awt.*;
 import frame.GamePanel;
@@ -27,11 +27,13 @@ public class Player extends Rectangle {
             if (speed < -maxSpeed) {
                 speed = -maxSpeed;
             }
-        } else {
+        } else if(GamePanel.aimLocX > this.x){
             speed += 1;
             if (speed > maxSpeed) {
                 speed = maxSpeed;
             }
+        }else{
+            speed = 0;
         }
         this.x += speed;
         if (this.x >= GamePanel.SCREEN_WIDTH - this.width) {
