@@ -5,6 +5,7 @@ import java.awt.*;
 import frame.GamePanel;
 
 public class Bullet extends Rectangle {
+    public boolean hit = false;
     double speed = 10.0;
     double xVelocity;
     double yVelocity;

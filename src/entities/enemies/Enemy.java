@@ -3,8 +3,9 @@ package entities.enemies;
 import java.awt.*;
 
 public abstract class Enemy extends Rectangle {
-    int xSpeed = 3;
-    int ySpeed = 3;
+    public boolean isAlive = true;
+    int xSpeed = 4;
+    int ySpeed = 4;
 
     public abstract void draw(Graphics2D g);
 

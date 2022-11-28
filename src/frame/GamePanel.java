@@ -104,8 +104,8 @@ public class GamePanel extends JPanel {
             if (FRAME % 120 == 0) {
                 enemies.add(new EnemyNinja());
             }
-            
-            //UPDATE ENEMY POSITION
+
+            // UPDATE ENEMY POSITION
             for (Enemy enemy : enemies) {
                 enemy.update();
             }
@@ -166,18 +166,27 @@ public class GamePanel extends JPanel {
     }
 
     // COLLISON / DELETION FUNCTION
-    private void collides(){
-        for (Bullet bullet : bullets) {
-            enemies.removeIf(el -> el.intersects(bullet));
+    private void collides() {
+        //we check collision
+        for (Enemy enemy : enemies) {
+            for (Bullet bullet : bullets) {
+                if (bullet.intersects(enemy)) {
+                    enemy.isAlive = false;
+                    bullet.hit = true;
+                }
+            }
         }
+        //we remove items that is collided
+        bullets.removeIf(el -> el.hit == true);
+        enemies.removeIf(el -> el.isAlive == false);
     }
 
     // MEMORY CLEANING
     private void clear() {
         final int MINIMUM = -100;
-        
-        bullets.removeIf(en -> en.y < MINIMUM || en.y > SCREEN_HEIGHT  || en.x < MINIMUM || en.x > SCREEN_WIDTH);
-        System.out.println(bullets.size()+"");
+
+        bullets.removeIf(en -> en.y < MINIMUM || en.y > SCREEN_HEIGHT || en.x < MINIMUM || en.x > SCREEN_WIDTH);
+        System.out.println(bullets.size() + "");
         enemies.removeIf(en -> en.x < MINIMUM || en.x > SCREEN_WIDTH);
     }
 
