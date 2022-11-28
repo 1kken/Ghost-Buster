@@ -10,6 +10,8 @@ public class EnemyNinja extends Enemy {
     public EnemyNinja(){
         this.x = xDirect();
         this.y = yLevel();
+        this.width = 32;
+        this.height = 32;
     }
 
     @Override

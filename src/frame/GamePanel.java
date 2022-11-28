@@ -131,6 +131,7 @@ public class GamePanel extends JPanel {
                 bullet.update();
             }
 
+            collides();
             player.update();
             clear();
             repaint();
@@ -155,7 +156,6 @@ public class GamePanel extends JPanel {
         g2.drawImage(BACKGROUND, getBgOffset(), -150, null);
         for (Enemy enemy : enemies) {
             enemy.draw(g2);
-            ;
         }
         player.draw(g2);
         for (Bullet bullet : bullets) {
@@ -165,10 +165,19 @@ public class GamePanel extends JPanel {
 
     }
 
+    // COLLISON / DELETION FUNCTION
+    private void collides(){
+        for (Bullet bullet : bullets) {
+            enemies.removeIf(el -> el.intersects(bullet));
+        }
+    }
+
     // MEMORY CLEANING
     private void clear() {
         final int MINIMUM = -100;
-        bullets.removeIf(en -> en.y < MINIMUM || en.y > SCREEN_HEIGHT + 100 || en.x < MINIMUM || en.x > SCREEN_WIDTH);
+        
+        bullets.removeIf(en -> en.y < MINIMUM || en.y > SCREEN_HEIGHT  || en.x < MINIMUM || en.x > SCREEN_WIDTH);
+        System.out.println(bullets.size()+"");
         enemies.removeIf(en -> en.x < MINIMUM || en.x > SCREEN_WIDTH);
     }
 

@@ -29,8 +29,8 @@ public class Bullet extends Rectangle {
     private void initBullets(int x, int y,int offset){
         this.x = x;
         this.y = y - 32;
-        this.height = 10;
-        this.width = 10;
+        this.height = 15;
+        this.width = 15;
         // ARCTAN GETS THE ANGLE OF X AND Y
         angle = Math.atan2(GamePanel.aimLocY - this.y, GamePanel.aimLocX - this.x);
 
