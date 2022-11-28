@@ -6,5 +6,7 @@ A ghost shooting game
 
 - [x] Build structure {Gameframe,Gamestate,Gameloop}
 - [x] Bullet spawning
-- [ ] Random enemy spawning
-- [ ] bullet collision
+- [x] Random enemy spawning
+- [x] Bullet collision
+- [ ] Enemy shooting pattern
+- [ ] Add more types of enemies
