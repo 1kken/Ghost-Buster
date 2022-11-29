@@ -12,9 +12,10 @@ public abstract class EnemyBullet extends Rectangle {
     double xVelocity;
     double yVelocity;
     double angle;
+
     // position
-    int x = (int) this.getX();
-    int y = (int) this.getY();
+    public int x = (int) this.getX();
+    public int y = (int) this.getY();
 
     public abstract void draw(Graphics2D g);
 

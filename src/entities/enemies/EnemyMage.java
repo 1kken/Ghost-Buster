@@ -4,6 +4,7 @@ import java.awt.Graphics2D;
 import java.util.Random;
 
 import entities.enemies.enemyBullets.EnemyBullet;
+import entities.enemies.enemyBullets.HomingBullet;
 import entities.enemies.enemyBullets.StraightBullet;
 import frame.GamePanel;
 
@@ -50,6 +51,6 @@ public class EnemyMage extends Enemy {
 
     @Override
     public EnemyBullet shoot(int x, int y) {
-        return new StraightBullet(x,y);
+        return new HomingBullet(x,y);
     }
 }

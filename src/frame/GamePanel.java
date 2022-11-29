@@ -1,10 +1,12 @@
 package frame;
 
+// JAVA UTILITIES IMPORT
 import java.awt.event.*;
-
 import javax.swing.*;
 import java.util.LinkedList;
+import java.awt.*;
 
+// ENTITIES IMPORT
 import entities.enemies.Enemy;
 import entities.enemies.EnemyMage;
 import entities.enemies.EnemyNinja;
@@ -12,8 +14,6 @@ import entities.enemies.enemyBullets.EnemyBullet;
 import entities.player.Bullet;
 import entities.player.Control;
 import entities.player.Player;
-
-import java.awt.*;
 
 public class GamePanel extends JPanel {
     // SCREEN SIZE & BACKGROUND & etc..
@@ -23,15 +23,15 @@ public class GamePanel extends JPanel {
     public static final int SCREEN_HEIGHT = 600;
 
     // GAME STATE VARIABLES
-    Timer game_loop;
     // FRAMES ARE LIKE A TIMER BUT GLOBAL
+    Timer game_loop;
     public int FRAME;
 
     // ENTITITES VARIABLE
     LinkedList<Bullet> bullets = new LinkedList<Bullet>();
     LinkedList<Enemy> enemies = new LinkedList<Enemy>();
-    LinkedList<EnemyBullet> enBullet = new LinkedList<EnemyBullet>();
-    Player player = new Player();
+    LinkedList<EnemyBullet> enBullets = new LinkedList<EnemyBullet>();
+    public static Player player = new Player();
 
     // PLAYER MOUSE POSITION
     public static int aimLocX = 0;
@@ -100,13 +100,10 @@ public class GamePanel extends JPanel {
 
             // RATE OF ENEMY SPAWNS
             // MAGE TYPE
-            // if (FRAME % 60 == 0) {
-            // enemies.add(new EnemyMage());
-            // }
-            // ASSASIN TYPE
-            if (FRAME % 120 == 0) {
-                enemies.add(new EnemyNinja());
+            if (FRAME % 150 == 0) {
+                enemies.add(new EnemyMage());
             }
+            // ASSASIN TYPE
 
             // UPDATE ENEMY POSITION
             for (Enemy enemy : enemies) {
@@ -118,18 +115,18 @@ public class GamePanel extends JPanel {
                 for (Enemy enemy : enemies) {
                     int x = (int) enemy.getX();
                     int y = (int) enemy.getY();
-                    if (x > 150 && x < SCREEN_WIDTH) {
+                    if (x > 150 && x < SCREEN_WIDTH - 100) {
                         EnemyBullet enBull = enemy.shoot(x, y);
-                        enBullet.add(enBull);
+                        enBullets.add(enBull);
                     }
                 }
             }
 
-            for (EnemyBullet enBulls : enBullet) {
+            for (EnemyBullet enBulls : enBullets) {
                 enBulls.update();
             }
 
-            // spawn BULLETS
+            // SPAWN BULLETS
             int OFFSET = 2;
             if (FRAME % 5 == 0 && SHOOT == 1) {
                 if (player.NUMOFBULLETS == 1) {
@@ -189,7 +186,7 @@ public class GamePanel extends JPanel {
         // DRAW AIM CURSOR
         g2.drawImage(AIM, aimLocX - 32, aimLocY - 32, null);
         // DRAW ENEMY BULLETS
-        for (EnemyBullet enBulls : enBullet) {
+        for (EnemyBullet enBulls : enBullets) {
             enBulls.draw(g2);
         }
 
@@ -197,7 +194,7 @@ public class GamePanel extends JPanel {
 
     // COLLISON / DELETION FUNCTION
     private void collides() {
-        // we check collision
+        // COLLISON FOR ENEMY AND BULLETS AND VICE VERSA
         for (Enemy enemy : enemies) {
             for (Bullet bullet : bullets) {
                 if (bullet.intersects(enemy)) {
@@ -206,7 +203,25 @@ public class GamePanel extends JPanel {
                 }
             }
         }
+
+        //COLIISION CHECK FOR BULLET TO ENEMY BULLET AND VICE VERSA
+        for(EnemyBullet enbullet: enBullets){
+            for(Bullet bullet: bullets){
+                if(enbullet.intersects(bullet)){
+                    System.out.println("HITS");
+                   bullet.hit = true;
+                   enbullet.hit = true; 
+                }
+            }
+        }
+
+        for(EnemyBullet enBullet: enBullets){
+            if(enBullet.intersects(player)){
+                System.out.println("Hit");
+            }
+        }
         // we remove items that is collided
+        enBullets.removeIf(el -> el.hit == true);
         bullets.removeIf(el -> el.hit == true);
         enemies.removeIf(el -> el.isAlive == false);
     }
@@ -216,8 +231,8 @@ public class GamePanel extends JPanel {
         final int MINIMUM = -100;
 
         bullets.removeIf(en -> en.y < MINIMUM || en.y > SCREEN_HEIGHT || en.x < MINIMUM || en.x > SCREEN_WIDTH);
-        System.out.println(bullets.size() + "");
         enemies.removeIf(en -> en.x < MINIMUM || en.x > SCREEN_WIDTH);
+        enBullets.removeIf(en -> en.y < MINIMUM || en.y > SCREEN_HEIGHT || en.x < MINIMUM || en.x > SCREEN_WIDTH);
     }
 
     ////////////////////////////////////////////////////////////

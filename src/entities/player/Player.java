@@ -8,7 +8,7 @@ public class Player extends Rectangle {
     public int NUMOFBULLETS = 2;
 
     int speed = 0;
-    int maxSpeed = 2;
+    int maxSpeed = 4;
 
     public Player() {
         this.x = 650;
