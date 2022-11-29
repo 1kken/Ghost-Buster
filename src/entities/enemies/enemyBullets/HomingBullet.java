@@ -6,8 +6,8 @@ import frame.GamePanel;
 
 public class HomingBullet extends EnemyBullet {
     public HomingBullet(int x, int y){
-        this.height = 32;
-        this.width = 32;
+        this.height = 16;
+        this.width = 16;
         this.x = x;
         this.y = y;
         // ARCTAN GETS THE ANGLE OF X AND Y

@@ -5,7 +5,6 @@ import java.util.Random;
 
 import entities.enemies.enemyBullets.EnemyBullet;
 import entities.enemies.enemyBullets.HomingBullet;
-import entities.enemies.enemyBullets.StraightBullet;
 import frame.GamePanel;
 
 public class EnemyMage extends Enemy {

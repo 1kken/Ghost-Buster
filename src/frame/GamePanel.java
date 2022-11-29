@@ -104,6 +104,9 @@ public class GamePanel extends JPanel {
                 enemies.add(new EnemyMage());
             }
             // ASSASIN TYPE
+            if (FRAME % 90 == 0) {
+                enemies.add(new EnemyNinja());
+            }
 
             // UPDATE ENEMY POSITION
             for (Enemy enemy : enemies) {
@@ -204,25 +207,18 @@ public class GamePanel extends JPanel {
             }
         }
 
-        //COLIISION CHECK FOR BULLET TO ENEMY BULLET AND VICE VERSA
         for(EnemyBullet enbullet: enBullets){
             for(Bullet bullet: bullets){
-                if(enbullet.intersects(bullet)){
+                if(bullet.intersects(enbullet)){
                     System.out.println("HITS");
                    bullet.hit = true;
                    enbullet.hit = true; 
                 }
             }
         }
-
-        for(EnemyBullet enBullet: enBullets){
-            if(enBullet.intersects(player)){
-                System.out.println("Hit");
-            }
-        }
         // we remove items that is collided
-        enBullets.removeIf(el -> el.hit == true);
         bullets.removeIf(el -> el.hit == true);
+        enBullets.removeIf(el -> el.hit == true);
         enemies.removeIf(el -> el.isAlive == false);
     }
 
