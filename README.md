@@ -8,5 +8,7 @@ A ghost shooting game
 - [x] Bullet spawning
 - [x] Random enemy spawning
 - [x] Bullet collision
-- [ ] Enemy shooting pattern
+- [x] Enemy shooting pattern
+- [ ] Friendly GHOST that drop power ups
+- [ ] Power up Speed up, multi shot
 - [ ] Add more types of enemies
