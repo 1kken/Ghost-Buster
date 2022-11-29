@@ -100,7 +100,7 @@ public class GamePanel extends JPanel {
 
             // RATE OF ENEMY SPAWNS
             // MAGE TYPE
-            if (FRAME % 150 == 0) {
+            if (FRAME % 90 == 0) {
                 enemies.add(new EnemyMage());
             }
             // ASSASIN TYPE
@@ -160,6 +160,8 @@ public class GamePanel extends JPanel {
     ///////////////////////////////////////////////////////////
     /////////// MISCELLANOUS///////////////////////////////////
     /////////////////////////////////////////////////////////
+
+    // INITIALIZE IMAGES FOR THE PANEL
     private void initImages() {
         BACKGROUND = new ImageIcon(this.getClass().getResource("resource/bg.gif")).getImage();
         AIM = new ImageIcon(this.getClass().getResource("resource/aim.png")).getImage();
@@ -207,16 +209,25 @@ public class GamePanel extends JPanel {
             }
         }
 
-        for(EnemyBullet enbullet: enBullets){
-            for(Bullet bullet: bullets){
-                if(bullet.intersects(enbullet)){
+        // COLLISION FOR ENEMY BULLET AND BULLET
+        for (EnemyBullet enbullet : enBullets) {
+            for (Bullet bullet : bullets) {
+                if (bullet.intersects(enbullet)) {
                     System.out.println("HITS");
-                   bullet.hit = true;
-                   enbullet.hit = true; 
+                    bullet.hit = true;
+                    enbullet.hit = true;
                 }
             }
         }
-        // we remove items that is collided
+
+        // COLLISION FOR ENEMY BULLETS AND PLAYER
+        for (EnemyBullet enBullet : enBullets) {
+            if (enBullet.intersects(player)) {
+                enBullet.hit = true;
+            }
+        }
+
+        // THIS WHERE WE REMOVE THE ITEM WHEN COLLISION
         bullets.removeIf(el -> el.hit == true);
         enBullets.removeIf(el -> el.hit == true);
         enemies.removeIf(el -> el.isAlive == false);

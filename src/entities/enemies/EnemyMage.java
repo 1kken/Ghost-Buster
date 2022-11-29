@@ -9,6 +9,7 @@ import frame.GamePanel;
 
 public class EnemyMage extends Enemy {
     public EnemyMage(){
+        this.xSpeed = 13;
         this.x = xDirect();
         this.y = yLevel();
         this.width = 32;

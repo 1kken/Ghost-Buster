@@ -9,6 +9,7 @@ import frame.GamePanel;
 
 public class EnemyNinja extends Enemy {
     public EnemyNinja() {
+        this.xSpeed = 10;
         this.x = xDirect();
         this.y = yLevel();
         this.width = 32;
