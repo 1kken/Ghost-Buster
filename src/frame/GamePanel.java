@@ -8,6 +8,7 @@ import java.util.LinkedList;
 import entities.enemies.Enemy;
 import entities.enemies.EnemyMage;
 import entities.enemies.EnemyNinja;
+import entities.enemies.enemyBullets.EnemyBullet;
 import entities.player.Bullet;
 import entities.player.Control;
 import entities.player.Player;
@@ -29,6 +30,7 @@ public class GamePanel extends JPanel {
     // ENTITITES VARIABLE
     LinkedList<Bullet> bullets = new LinkedList<Bullet>();
     LinkedList<Enemy> enemies = new LinkedList<Enemy>();
+    LinkedList<EnemyBullet> enBullet = new LinkedList<EnemyBullet>();
     Player player = new Player();
 
     // PLAYER MOUSE POSITION
@@ -98,9 +100,9 @@ public class GamePanel extends JPanel {
 
             // RATE OF ENEMY SPAWNS
             // MAGE TYPE
-            if (FRAME % 60 == 0) {
-                enemies.add(new EnemyMage());
-            }
+            // if (FRAME % 60 == 0) {
+            // enemies.add(new EnemyMage());
+            // }
             // ASSASIN TYPE
             if (FRAME % 120 == 0) {
                 enemies.add(new EnemyNinja());
@@ -109,6 +111,22 @@ public class GamePanel extends JPanel {
             // UPDATE ENEMY POSITION
             for (Enemy enemy : enemies) {
                 enemy.update();
+            }
+
+            // SPAWN ENEMY BULLETS
+            if (FRAME % 60 == 0) {
+                for (Enemy enemy : enemies) {
+                    int x = (int) enemy.getX();
+                    int y = (int) enemy.getY();
+                    if (x > 150 && x < SCREEN_WIDTH) {
+                        EnemyBullet enBull = enemy.shoot(x, y);
+                        enBullet.add(enBull);
+                    }
+                }
+            }
+
+            for (EnemyBullet enBulls : enBullet) {
+                enBulls.update();
             }
 
             // spawn BULLETS
@@ -155,20 +173,31 @@ public class GamePanel extends JPanel {
     // DRAWING METHOD
     private void display(Graphics2D g2) {
         g2.drawImage(BACKGROUND, getBgOffset(), -150, null);
+        // DRAW ENEMIES
         for (Enemy enemy : enemies) {
             enemy.draw(g2);
         }
+
+        // DRAW PLAYER
         player.draw(g2);
+
+        // DRAW BULLETS
         for (Bullet bullet : bullets) {
             bullet.draw(g2);
         }
+
+        // DRAW AIM CURSOR
         g2.drawImage(AIM, aimLocX - 32, aimLocY - 32, null);
+        // DRAW ENEMY BULLETS
+        for (EnemyBullet enBulls : enBullet) {
+            enBulls.draw(g2);
+        }
 
     }
 
     // COLLISON / DELETION FUNCTION
     private void collides() {
-        //we check collision
+        // we check collision
         for (Enemy enemy : enemies) {
             for (Bullet bullet : bullets) {
                 if (bullet.intersects(enemy)) {
@@ -177,7 +206,7 @@ public class GamePanel extends JPanel {
                 }
             }
         }
-        //we remove items that is collided
+        // we remove items that is collided
         bullets.removeIf(el -> el.hit == true);
         enemies.removeIf(el -> el.isAlive == false);
     }
