@@ -22,7 +22,7 @@ public class Player extends Rectangle {
     }
 
     public void update() {
-        if (GamePanel.aimLocX < this.x) {
+        if (GamePanel.aimLocX < this.getCenterX()) {
             speed -= 1;
             if (speed < -maxSpeed) {
                 speed = -maxSpeed;
