@@ -4,6 +4,7 @@ package frame;
 import java.awt.event.*;
 import javax.swing.*;
 import java.util.LinkedList;
+import java.util.Random;
 import java.awt.*;
 
 // ENTITIES IMPORT
@@ -12,6 +13,7 @@ import entities.enemies.EnemyMage;
 import entities.enemies.EnemyNinja;
 import entities.enemies.enemyBullets.EnemyBullet;
 import entities.friends.FriendGhost;
+import entities.friends.powerUps.PowerUp;
 import entities.player.Bullet;
 import entities.player.Control;
 import entities.player.Player;
@@ -22,7 +24,7 @@ public class GamePanel extends JPanel {
     Image AIM;
     Image GROUND;
     public static final int SCREEN_WIDTH = 1366;
-    public static final int SCREEN_HEIGHT = 768 ;
+    public static final int SCREEN_HEIGHT = 768;
 
     // GAME STATE VARIABLES
     // FRAMES ARE LIKE A TIMER BUT GLOBAL
@@ -34,6 +36,7 @@ public class GamePanel extends JPanel {
     LinkedList<Enemy> enemies = new LinkedList<Enemy>();
     LinkedList<EnemyBullet> enBullets = new LinkedList<EnemyBullet>();
     LinkedList<FriendGhost> friends = new LinkedList<FriendGhost>();
+    LinkedList<PowerUp> powerUps = new LinkedList<PowerUp>();
     public static Player player = new Player();
 
     // PLAYER MOUSE POSITION
@@ -108,6 +111,9 @@ public class GamePanel extends JPanel {
             // INT FRIENDLY GHOST
             intFriendlyGhost();
 
+            // INT POWER UPS
+            intPowerUps();
+
             collides();
             player.update();
             clear();
@@ -133,9 +139,9 @@ public class GamePanel extends JPanel {
 
     // DRAWING METHOD
     private void display(Graphics2D g2) {
-        //BACKGROUND CONFIGURATION
-       g2.drawImage(BACKGROUND, getBgOffset(), 0, null);
-        g2.drawImage(GROUND, 0, SCREEN_HEIGHT - 125, null); 
+        // BACKGROUND CONFIGURATION
+        g2.drawImage(BACKGROUND, getBgOffset(), 0, null);
+        g2.drawImage(GROUND, 0, SCREEN_HEIGHT - 125, null);
         // DRAW ENEMIES
         for (Enemy enemy : enemies) {
             enemy.draw(g2);
@@ -144,6 +150,10 @@ public class GamePanel extends JPanel {
         // DRAW FRIENDLY GHOST
         for (FriendGhost friend : friends) {
             friend.draw(g2);
+        }
+        // DRAW POWER UPS THAT HAVE BEEN DROPPED BY CHARLIE(THE FRIENDLY GHOST)
+        for (PowerUp powerUp : powerUps) {
+            powerUp.draw(g2);
         }
 
         // DRAW PLAYER
@@ -156,6 +166,7 @@ public class GamePanel extends JPanel {
 
         // DRAW AIM CURSOR
         g2.drawImage(AIM, aimLocX - 32, aimLocY - 32, null);
+
         // DRAW ENEMY BULLETS
         for (EnemyBullet enBulls : enBullets) {
             enBulls.draw(g2);
@@ -196,15 +207,6 @@ public class GamePanel extends JPanel {
         bullets.removeIf(el -> el.hit == true);
         enBullets.removeIf(el -> el.hit == true);
         enemies.removeIf(el -> el.isAlive == false);
-    }
-
-    // MEMORY CLEANING
-    private void clear() {
-        final int MINIMUM = -100;
-
-        bullets.removeIf(en -> en.y < MINIMUM || en.y > SCREEN_HEIGHT || en.x < MINIMUM || en.x > SCREEN_WIDTH);
-        enemies.removeIf(en -> en.x < MINIMUM || en.x > SCREEN_WIDTH);
-        enBullets.removeIf(en -> en.y < MINIMUM || en.y > SCREEN_HEIGHT || en.x < MINIMUM || en.x > SCREEN_WIDTH);
     }
 
     ////////////////////////////////////////////////////////////
@@ -275,12 +277,46 @@ public class GamePanel extends JPanel {
 
     // METHOD FOR FRIENDLY GHOST PANEL CONFIGURATION
     private void intFriendlyGhost() {
-        if (FRAME % 900 == 0) {
+        // 900
+        if (FRAME % 600 == 0) {
             friends.add(new FriendGhost());
         }
 
         for (FriendGhost friend : friends) {
             friend.update();
         }
+
+        for (FriendGhost friend : friends) {
+            int x = (int) friend.getX();
+            int y = (int) friend.getY();
+            if ( x > 0 && x < SCREEN_WIDTH - 10 && friend.dropped == false) {
+                if (probabilty() <= 0.7 / 60) {
+                    powerUps.add(friend.spawnPowUp(x, y));
+                    friend.dropped = true;
+                }
+            }
+        }
+    }
+
+    // METHOD FOR POWER UPS CONFIGURATION
+    private void intPowerUps() {
+        for (PowerUp powerUp : powerUps) {
+            powerUp.update();
+        }
+    }
+
+    // METHOD PROBABILITY DISTRIBUTION
+    public static float probabilty() {
+        Random ran = new Random();
+        return ran.nextFloat();
+    }
+
+    // MEMORY CLEANING
+    private void clear() {
+        final int MINIMUM = -100;
+
+        bullets.removeIf(en -> en.y < MINIMUM || en.y > SCREEN_HEIGHT || en.x < MINIMUM || en.x > SCREEN_WIDTH);
+        enemies.removeIf(en -> en.x < MINIMUM || en.x > SCREEN_WIDTH);
+        enBullets.removeIf(en -> en.y < MINIMUM || en.y > SCREEN_HEIGHT || en.x < MINIMUM || en.x > SCREEN_WIDTH);
     }
 }

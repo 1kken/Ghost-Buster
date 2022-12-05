@@ -2,10 +2,13 @@ package entities.friends;
 
 import java.awt.*;
 import javax.swing.ImageIcon;
+
+import entities.friends.powerUps.PowerUp;
 import frame.GamePanel;
 
 public class FriendGhost extends Rectangle {
     Image image;
+    public boolean dropped = false;
     int SPEED = 10;
     public FriendGhost(){
         this.x = GamePanel.SCREEN_WIDTH;
@@ -21,5 +24,9 @@ public class FriendGhost extends Rectangle {
     
     public void update(){
         this.x -= SPEED;
+    }
+
+    public PowerUp spawnPowUp(int x,int y){
+        return new PowerUp(x,y);
     }
 }
