@@ -20,8 +20,9 @@ public class GamePanel extends JPanel {
     // SCREEN SIZE & BACKGROUND & etc..
     Image BACKGROUND;
     Image AIM;
-    public static final int SCREEN_WIDTH = 1300;
-    public static final int SCREEN_HEIGHT = 600;
+    Image GROUND;
+    public static final int SCREEN_WIDTH = 1366;
+    public static final int SCREEN_HEIGHT = 768 ;
 
     // GAME STATE VARIABLES
     // FRAMES ARE LIKE A TIMER BUT GLOBAL
@@ -120,8 +121,9 @@ public class GamePanel extends JPanel {
 
     // INITIALIZE IMAGES FOR THE PANEL
     private void initImages() {
-        BACKGROUND = new ImageIcon(this.getClass().getResource("resource/bg.gif")).getImage();
+        BACKGROUND = new ImageIcon(this.getClass().getResource("resource/bg.jpg")).getImage();
         AIM = new ImageIcon(this.getClass().getResource("resource/aim.png")).getImage();
+        GROUND = new ImageIcon(this.getClass().getResource("resource/ground.png")).getImage();
     }
 
     // GAME INITIALIZATION OR START
@@ -131,7 +133,9 @@ public class GamePanel extends JPanel {
 
     // DRAWING METHOD
     private void display(Graphics2D g2) {
-        g2.drawImage(BACKGROUND, getBgOffset(), -150, null);
+        //BACKGROUND CONFIGURATION
+       g2.drawImage(BACKGROUND, getBgOffset(), 0, null);
+        g2.drawImage(GROUND, 0, SCREEN_HEIGHT - 125, null); 
         // DRAW ENEMIES
         for (Enemy enemy : enemies) {
             enemy.draw(g2);
@@ -175,7 +179,6 @@ public class GamePanel extends JPanel {
         for (EnemyBullet enbullet : enBullets) {
             for (Bullet bullet : bullets) {
                 if (bullet.intersects(enbullet)) {
-                    System.out.println("HITS");
                     bullet.hit = true;
                     enbullet.hit = true;
                 }

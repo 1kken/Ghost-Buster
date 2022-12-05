@@ -11,8 +11,8 @@ public class StraightBullet extends EnemyBullet {
         this.yVelocity = 20.0;
         this.height = 16;
         this.width = 16;
-        this.x = x;
-        this.y = y;
+        this.x = x + 30;
+        this.y = y + 10;
 
         //SET BULLET image
         bullet = new ImageIcon(this.getClass().getResource("resource/straightbullet.gif")).getImage();

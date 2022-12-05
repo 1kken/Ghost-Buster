@@ -12,18 +12,19 @@ import entities.enemies.enemyBullets.StraightBullet;
 import frame.GamePanel;
 
 public class EnemyNinja extends Enemy {
-    Image image = new ImageIcon(this.getClass().getResource("resource/ghostAssasin.gif")).getImage();
+    Image image = new ImageIcon(this.getClass().getResource("resource/ghostNinja_right.gif")).getImage();
+
     public EnemyNinja() {
         this.xSpeed = 5;
         this.x = xDirect();
         this.y = yLevel();
-        this.width = 32;
-        this.height = 32;
+        this.width = 64;
+        this.height = 64;
     }
 
     @Override
     public void draw(Graphics2D g) {
-        g.drawImage(image, x, y, null, null);        
+        g.drawImage(image, x, y, null, null);
     }
 
     @Override
@@ -39,17 +40,20 @@ public class EnemyNinja extends Enemy {
 
     private int xDirect() {
         int origin = 0;
-        if (randInt() == 1) {
+        int dir = randInt();
+        if ( dir == 1) {
             origin = GamePanel.SCREEN_WIDTH;
+            image = new ImageIcon(this.getClass().getResource("resource/ghostNinja_left.gif")).getImage();
             this.xSpeed *= -1;
         }
         return origin;
     }
 
     private int yLevel() {
-        int level = 200;
-        if (randInt() == 1) {
-            level = 150;
+        Random rand = new Random();
+        int level = 0;
+        while(level < 201){
+            level = rand.nextInt(351);
         }
         return level;
     }
@@ -58,5 +62,4 @@ public class EnemyNinja extends Enemy {
     public EnemyBullet shoot(int x, int y) {
         return new StraightBullet(x, y);
     }
-
 }

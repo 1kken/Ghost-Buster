@@ -3,11 +3,16 @@ package entities.enemies;
 import java.awt.Graphics2D;
 import java.util.Random;
 
+import javax.swing.ImageIcon;
+
+import java.awt.*;
+
 import entities.enemies.enemyBullets.EnemyBullet;
 import entities.enemies.enemyBullets.HomingBullet;
 import frame.GamePanel;
 
 public class EnemyMage extends Enemy {
+    Image image = new ImageIcon(this.getClass().getResource("resource/ghostMage_right.gif")).getImage();
     public EnemyMage(){
         this.xSpeed = 13;
         this.x = xDirect();
@@ -18,7 +23,7 @@ public class EnemyMage extends Enemy {
 
     @Override
     public void draw(Graphics2D g) {
-        g.fillRect(x, y, width, height);
+        g.drawImage(image, x, y, null, null);
     }
 
     @Override
@@ -34,8 +39,10 @@ public class EnemyMage extends Enemy {
     
     private int xDirect(){
         int origin = 0;
-        if(randInt() == 1){
+        int dir = randInt();
+        if(dir == 1){
            origin = GamePanel.SCREEN_WIDTH; 
+           image = new ImageIcon(this.getClass().getResource("resource/ghostMage_left.gif")).getImage();
            this.xSpeed *= -1;
         }
         return origin;

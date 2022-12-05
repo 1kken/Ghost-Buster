@@ -8,7 +8,7 @@ import frame.GamePanel;
 
 public class Bullet extends Rectangle {
     public boolean hit = false;
-    double speed = 15.0;
+    double speed = 20.0;
     double xVelocity;
     double yVelocity;
     double angle;
