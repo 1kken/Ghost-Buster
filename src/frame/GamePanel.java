@@ -17,6 +17,7 @@ import entities.friends.powerUps.PowerUp;
 import entities.player.Bullet;
 import entities.player.Control;
 import entities.player.Player;
+import utils.PowerUps;
 
 public class GamePanel extends JPanel {
     // SCREEN SIZE & BACKGROUND & etc..
@@ -203,10 +204,32 @@ public class GamePanel extends JPanel {
             }
         }
 
+        // COLLISION FOR PLAYER AND POWERUPS
+        for (PowerUp powerUp : powerUps) {
+            if (powerUp.intersects(player)) {
+                if (powerUp.powUp == PowerUps.MOVEMENTSPEED) {
+                    powerUp.picked = true;
+                    if (player.maxSpeed < 8) {
+                        player.maxSpeed += 1;
+                    }
+                }
+            }
+
+            if (powerUp.intersects(player)) {
+                if (powerUp.powUp == PowerUps.MULTISHOT) {
+                    powerUp.picked = true;
+                    if (player.NUMOFBULLETS < 4) {
+                        player.NUMOFBULLETS += 1;
+                    }
+                }
+            }
+        }
+
         // THIS WHERE WE REMOVE THE ITEM WHEN COLLISION
         bullets.removeIf(el -> el.hit == true);
         enBullets.removeIf(el -> el.hit == true);
         enemies.removeIf(el -> el.isAlive == false);
+        powerUps.removeIf(el -> el.picked == true);
     }
 
     ////////////////////////////////////////////////////////////
@@ -289,8 +312,8 @@ public class GamePanel extends JPanel {
         for (FriendGhost friend : friends) {
             int x = (int) friend.getX();
             int y = (int) friend.getY();
-            if ( x > 0 && x < SCREEN_WIDTH - 10 && friend.dropped == false) {
-                if (probabilty() <= 0.7 / 60) {
+            if (x > 0 && x < SCREEN_WIDTH - 10 && friend.dropped == false) {
+                if (probabilty() <= 0.8 / 60) {
                     powerUps.add(friend.spawnPowUp(x, y));
                     friend.dropped = true;
                 }

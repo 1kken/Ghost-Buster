@@ -5,10 +5,10 @@ import frame.GamePanel;
 
 public class Player extends Rectangle {
     //====PLAYER POWER UPS=======
-    public int NUMOFBULLETS = 2;
+    public int NUMOFBULLETS = 1;
 
     int speed = 0;
-    int maxSpeed = 4;
+    public int maxSpeed = 4;
 
     public Player() {
         this.x = 650;

@@ -9,6 +9,7 @@ import frame.GamePanel;
 
 public class PowerUp extends Rectangle {
    public PowerUps powUp;
+   public boolean picked = false;
    Image image;
 
    public PowerUp(int x,int y) {
