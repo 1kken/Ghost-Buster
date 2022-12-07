@@ -13,6 +13,7 @@ import frame.GamePanel;
 
 public class EnemyMage extends Enemy {
     Image image = new ImageIcon(this.getClass().getResource("resource/ghostMage_right.gif")).getImage();
+    String TYPE = "MAGE";
     public EnemyMage(){
         this.xSpeed = 13;
         this.x = xDirect();
@@ -59,5 +60,10 @@ public class EnemyMage extends Enemy {
     @Override
     public EnemyBullet shoot(int x, int y) {
         return new HomingBullet(x,y);
+    }
+
+    @Override
+    public String getType() {
+        return this.TYPE;
     }
 }

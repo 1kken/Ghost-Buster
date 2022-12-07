@@ -19,6 +19,7 @@ import entities.player.Control;
 import entities.player.Player;
 import frame.gameStateVariables.LifeState;
 import frame.gameStateVariables.Score;
+import utils.CustomFont;
 import utils.PowerUps;
 
 public class GamePanel extends JPanel {
@@ -74,6 +75,10 @@ public class GamePanel extends JPanel {
     public void paint(Graphics g) {
         // CAST GRAPHIC OBJECT TO GRAPHICS 2D
         Graphics2D g2 = (Graphics2D) g;
+
+        //set a global custom font
+        g2.setFont(CustomFont.load(60));
+
         g2.setColor(Color.white);
         display(g2);
     }
@@ -148,7 +153,7 @@ public class GamePanel extends JPanel {
     }
 
     // DRAWING METHOD
-    private void display(Graphics2D g2) {
+    private void display(Graphics2D g2) { 
         // BACKGROUND CONFIGURATION
         g2.drawImage(BACKGROUND, getBgOffset(), 0, null);
         g2.drawImage(GROUND, 0, SCREEN_HEIGHT - 125, null);
@@ -196,6 +201,7 @@ public class GamePanel extends JPanel {
         for (Enemy enemy : enemies) {
             for (Bullet bullet : bullets) {
                 if (bullet.intersects(enemy)) {
+                    updateScore(enemy.getType());
                     enemy.isAlive = false;
                     bullet.hit = true;
                 }
@@ -368,6 +374,17 @@ public class GamePanel extends JPanel {
     private void intPowerUps() {
         for (PowerUp powerUp : powerUps) {
             powerUp.update();
+        }
+    }
+
+    //METHOD FOR SCORING CONFIGURATION
+    private void updateScore(String type){
+        if(type.equals("MAGE")){
+            player.SCORE += 250;
+        }
+
+        if(type.equals("NINJA")){
+            player.SCORE += 150;
         }
     }
 

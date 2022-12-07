@@ -13,7 +13,7 @@ import frame.GamePanel;
 
 public class EnemyNinja extends Enemy {
     Image image = new ImageIcon(this.getClass().getResource("resource/ghostNinja_right.gif")).getImage();
-
+    String TYPE = "NINJA";
     public EnemyNinja() {
         this.xSpeed = 5;
         this.x = xDirect();
@@ -61,5 +61,10 @@ public class EnemyNinja extends Enemy {
     @Override
     public EnemyBullet shoot(int x, int y) {
         return new StraightBullet(x, y);
+    }
+
+    @Override
+    public String getType() {
+        return this.TYPE;
     }
 }
