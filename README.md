@@ -12,7 +12,7 @@ A ghost shooting game
 - [x] Friendly GHOST that drop power ups
 - [x] Add enemy sprites 
 - [x] Power up Speed up, multi shot
-- [ ] Scoring
-- [ ] Game state
-- [ ] Player game over three lifes
+- [x] Scoring
+- [x] Game state
+- [x] Player game over three lifes
 - [ ] Add more types of enemies

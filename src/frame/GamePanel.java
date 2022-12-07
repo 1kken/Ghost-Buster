@@ -18,6 +18,7 @@ import entities.player.Bullet;
 import entities.player.Control;
 import entities.player.Player;
 import frame.gameStateVariables.LifeState;
+import frame.gameStateVariables.PlayerState;
 import frame.gameStateVariables.Score;
 import utils.CustomFont;
 import utils.PowerUps;
@@ -25,7 +26,8 @@ import utils.PowerUps;
 public class GamePanel extends JPanel {
     // SCREEN SIZE & BACKGROUND & etc..
     JFrame ancestorFrame;
-    Font customFont = CustomFont.load(60);
+    public static Font customFont = CustomFont.load(60);
+    public static Font customSmallFont = CustomFont.load(20);
     Image BACKGROUND;
     Image AIM;
     Image GROUND;
@@ -34,6 +36,7 @@ public class GamePanel extends JPanel {
 
     // GAME STATE VARIABLES
     public static boolean gameOver = false;
+    PlayerState playerState;
     // FRAMES ARE LIKE A TIMER BUT GLOBAL
     Timer game_loop;
     public int FRAME;
@@ -72,6 +75,7 @@ public class GamePanel extends JPanel {
 
         // HEALTH DISPLAY
         heartsInt();
+
 
     }
 
@@ -218,12 +222,17 @@ public class GamePanel extends JPanel {
         // DRAW SCORE
         score.draw(g2);
 
+
         // DRAW GAME OVER
         if (gameOver == true) {
             ancestorFrame = (JFrame) SwingUtilities.getWindowAncestor(this);
             game_loop.stop();
             new GameOver().draw(g2);
         }
+
+        //DRAW PLAYER STATUS
+        playerState = new PlayerState(player.maxSpeed,player.NUMOFBULLETS);
+        playerState.draw(g2);
     }
 
     // COLLISON / DELETION FUNCTION
