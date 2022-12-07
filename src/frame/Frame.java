@@ -1,14 +1,16 @@
 package frame;
+import java.awt.Dimension;
+
 import javax.swing.JFrame;
 public class Frame extends JFrame  {
     public Frame(){
       GamePanel gamePanel = new GamePanel();
       gamePanel.setFocusable(true);
-      add(gamePanel);
-      setDefaultCloseOperation(EXIT_ON_CLOSE);
-      setTitle("GHOST BUSTER");
-      setVisible(true);
-      pack();
-      setLocationRelativeTo(null);
+      this.add(gamePanel);
+      this.setDefaultCloseOperation(EXIT_ON_CLOSE);
+      this.setTitle("GHOST BUSTER");
+      this.setVisible(true);
+      this.pack();
+      this.setLocationRelativeTo(null);
     } 
 }

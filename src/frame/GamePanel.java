@@ -17,6 +17,7 @@ import entities.friends.powerUps.PowerUp;
 import entities.player.Bullet;
 import entities.player.Control;
 import entities.player.Player;
+import frame.gameStateVariables.LifeState;
 import utils.PowerUps;
 
 public class GamePanel extends JPanel {
@@ -33,12 +34,15 @@ public class GamePanel extends JPanel {
     public int FRAME;
 
     // ENTITITES VARIABLE
+    public static Player player = new Player();
     LinkedList<Bullet> bullets = new LinkedList<Bullet>();
     LinkedList<Enemy> enemies = new LinkedList<Enemy>();
     LinkedList<EnemyBullet> enBullets = new LinkedList<EnemyBullet>();
     LinkedList<FriendGhost> friends = new LinkedList<FriendGhost>();
     LinkedList<PowerUp> powerUps = new LinkedList<PowerUp>();
-    public static Player player = new Player();
+
+    //GAME STATE VARIABLES
+    LinkedList<LifeState> health = new LinkedList<LifeState>();
 
     // PLAYER MOUSE POSITION
     public static int aimLocX = 0;
@@ -139,6 +143,8 @@ public class GamePanel extends JPanel {
     }
 
     // DRAWING METHOD
+    //for heart position
+    int offset = 0;
     private void display(Graphics2D g2) {
         // BACKGROUND CONFIGURATION
         g2.drawImage(BACKGROUND, getBgOffset(), 0, null);
@@ -171,6 +177,19 @@ public class GamePanel extends JPanel {
         // DRAW ENEMY BULLETS
         for (EnemyBullet enBulls : enBullets) {
             enBulls.draw(g2);
+        }
+        
+        //DRAW GAME STATE VARIABLES
+        for(int i = 0; i<=player.HEALTH;i++){
+            LifeState heart = new LifeState();
+            heart.positionX+=offset;
+            health.add(heart);
+            if(offset < 60){
+                offset += 50;
+            }
+        }
+        for(LifeState heart: health){
+            heart.draw(g2);
         }
 
     }
@@ -209,7 +228,7 @@ public class GamePanel extends JPanel {
             if (powerUp.intersects(player)) {
                 if (powerUp.powUp == PowerUps.MOVEMENTSPEED) {
                     powerUp.picked = true;
-                    if (player.maxSpeed < 8) {
+                    if (player.maxSpeed < 5) {
                         player.maxSpeed += 1;
                     }
                 }
@@ -218,7 +237,7 @@ public class GamePanel extends JPanel {
             if (powerUp.intersects(player)) {
                 if (powerUp.powUp == PowerUps.MULTISHOT) {
                     powerUp.picked = true;
-                    if (player.NUMOFBULLETS < 4) {
+                    if (player.NUMOFBULLETS < 3) {
                         player.NUMOFBULLETS += 1;
                     }
                 }
