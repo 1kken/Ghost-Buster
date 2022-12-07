@@ -78,7 +78,7 @@ public class GamePanel extends JPanel {
         // CAST GRAPHIC OBJECT TO GRAPHICS 2D
         Graphics2D g2 = (Graphics2D) g;
 
-        //SET G@ CHARACTERISTICS
+        // SET G@ CHARACTERISTICS
         g2.setFont(customFont);
         g2.setColor(Color.white);
         display(g2);
@@ -94,10 +94,11 @@ public class GamePanel extends JPanel {
         addKeyListener(new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent e) {
-                if(gameOver == true){
-                    if(e.getKeyChar() == 'y' || e.getKeyChar() == 'Y'){
+                if (gameOver == true) {
+                    if (e.getKeyChar() == 'y' || e.getKeyChar() == 'Y') {
                         reset();
-                    }                }
+                    }
+                }
             }
         });
 
@@ -134,22 +135,22 @@ public class GamePanel extends JPanel {
             // INT POWER UPS
             intPowerUps();
 
-            //COLLISON DETECTION
+            // COLLISON DETECTION
             collides();
 
-            //SCORE DEDUCTION METHOD
+            // SCORE DEDUCTION METHOD
             penalty();
 
-            //GAME OVER METHOD
+            // GAME OVER METHOD
             gameOver();
 
-            //UPDATE PLAYER POSITION
+            // UPDATE PLAYER POSITION
             player.update();
 
             // CLEAR MEMORY(OBVIOUSLY FOR PERFORMANCE)
             clear();
 
-            //REPAINT THE PANEL
+            // REPAINT THE PANEL
             repaint();
         }
     }
@@ -171,11 +172,11 @@ public class GamePanel extends JPanel {
     }
 
     // DRAWING METHOD
-    private void display(Graphics2D g2) { 
+    private void display(Graphics2D g2) {
         // BACKGROUND CONFIGURATION
         g2.drawImage(BACKGROUND, getBgOffset(), 0, null);
         g2.drawImage(GROUND, 0, SCREEN_HEIGHT - 125, null);
-        
+
         // DRAW ENEMIES
         for (Enemy enemy : enemies) {
             enemy.draw(g2);
@@ -210,11 +211,11 @@ public class GamePanel extends JPanel {
         for (LifeState heart : health) {
             heart.draw(g2);
         }
-        //DRAW SCORE
+        // DRAW SCORE
         score.draw(g2);
 
-        //DRAW GAME OVER
-        if(gameOver == true){
+        // DRAW GAME OVER
+        if (gameOver == true) {
             game_loop.stop();
             new GameOver().draw(g2);
         }
@@ -226,7 +227,7 @@ public class GamePanel extends JPanel {
         for (Enemy enemy : enemies) {
             for (Bullet bullet : bullets) {
                 if (bullet.intersects(enemy)) {
-                    updateScore(enemy.getType(),enemy.getPoints());
+                    updateScore(enemy.getType(), enemy.getPoints());
                     enemy.isAlive = false;
                     bullet.hit = true;
                 }
@@ -328,8 +329,8 @@ public class GamePanel extends JPanel {
     // HEALTH DISPLAY CONFIGURATION
     // for heart position
     int offset = 0;
+
     private void heartsInt() {
-        if (health.size() < 3) {
             for (int i = player.HEALTH; i >= 1; i--) {
                 LifeState heart = new LifeState();
                 heart.positionX += offset;
@@ -338,7 +339,6 @@ public class GamePanel extends JPanel {
                     offset += 50;
                 }
             }
-        }
         System.out.print(health.size() + "");
     }
 
@@ -379,27 +379,28 @@ public class GamePanel extends JPanel {
         for (FriendGhost friend : friends) {
             int x = (int) friend.getX();
             int y = (int) friend.getY();
-            if (x > 0 && x < SCREEN_WIDTH - 10 && friend.dropped == false) {
-                if (probabilty() <= 0.8 / 60) {
+            if (x > 0 && x < SCREEN_WIDTH - 100 && friend.dropped == false) {
+                if (probabilty() <= 0.7 / 60) {
                     powerUps.add(friend.spawnPowUp(x, y));
                     friend.dropped = true;
                 }
             }
         }
     }
-    //METHOD FOR GAMEOVER CONFIGURATIOM
-    private void gameOver(){
-        if(player.HEALTH < 1 || player.SCORE < 0){
-            gameOver = true; 
+
+    // METHOD FOR GAMEOVER CONFIGURATIOM
+    private void gameOver() {
+        if (player.HEALTH < 1 || player.SCORE < 0) {
+            gameOver = true;
         }
     }
 
-    //RESET WHEN PLAYER PRESS RETRY
-    private void reset(){
+    // RESET WHEN PLAYER PRESS RETRY
+    private void reset() {
         player.HEALTH = 3;
         player.NUMOFBULLETS = 1;
         player.SCORE = 0;
-        player.maxSpeed =  4;
+        player.maxSpeed = 4;
         clearScreen();
         heartsInt();
         System.out.println(player.HEALTH + "");
@@ -407,8 +408,9 @@ public class GamePanel extends JPanel {
         game_loop.restart();
     }
 
-    //RESET SCREEN
-    private void clearScreen(){
+    // RESET SCREEN
+    private void clearScreen() {
+        offset = 0;
         enemies.clear();
         enBullets.clear();
         friends.clear();
@@ -424,13 +426,13 @@ public class GamePanel extends JPanel {
         }
     }
 
-    //METHOD FOR SCORING CONFIGURATION
-    private void updateScore(String type, int points){
-        if(type.equals("MAGE")){
-            player.SCORE += points ;
+    // METHOD FOR SCORING CONFIGURATION
+    private void updateScore(String type, int points) {
+        if (type.equals("MAGE")) {
+            player.SCORE += points;
         }
 
-        if(type.equals("NINJA")){
+        if (type.equals("NINJA")) {
             player.SCORE += points;
         }
     }
@@ -441,12 +443,12 @@ public class GamePanel extends JPanel {
         return ran.nextFloat();
     }
 
-    //METHOD FOR DECREMENTING SCORE
-    private void penalty(){
+    // METHOD FOR DECREMENTING SCORE
+    private void penalty() {
         final int MINIMUM = -100;
-        for(Enemy enemy: enemies){
-            if(enemy.x < MINIMUM || enemy.x > SCREEN_WIDTH){
-                player.SCORE -= enemy.getPoints();        
+        for (Enemy enemy : enemies) {
+            if (enemy.x < MINIMUM || enemy.x > SCREEN_WIDTH) {
+                player.SCORE -= enemy.getPoints();
             }
         }
     }
