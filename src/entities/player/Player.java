@@ -6,7 +6,8 @@ import frame.GamePanel;
 public class Player extends Rectangle {
     //====PLAYER POWER UPS=======
     public int NUMOFBULLETS = 1;
-    public int HEALTH = 3; 
+    public int HEALTH = 3;
+    public int SCORE = 0; 
 
     int speed = 0;
     public int maxSpeed = 4;

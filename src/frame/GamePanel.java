@@ -18,6 +18,7 @@ import entities.player.Bullet;
 import entities.player.Control;
 import entities.player.Player;
 import frame.gameStateVariables.LifeState;
+import frame.gameStateVariables.Score;
 import utils.PowerUps;
 
 public class GamePanel extends JPanel {
@@ -41,7 +42,8 @@ public class GamePanel extends JPanel {
     LinkedList<FriendGhost> friends = new LinkedList<FriendGhost>();
     LinkedList<PowerUp> powerUps = new LinkedList<PowerUp>();
 
-    //GAME STATE VARIABLES
+    // GAME STATE VARIABLES
+    Score score = new Score();
     LinkedList<LifeState> health = new LinkedList<LifeState>();
 
     // PLAYER MOUSE POSITION
@@ -63,6 +65,9 @@ public class GamePanel extends JPanel {
         // START THE GAME
         game_loop = new Timer(17, actionHandler);
         gameStart();
+
+        // HEALTH DISPLAY
+        heartsInt();
     }
 
     // PAINT METHOD FOR EVERY COMPONENTS
@@ -143,8 +148,6 @@ public class GamePanel extends JPanel {
     }
 
     // DRAWING METHOD
-    //for heart position
-    int offset = 0;
     private void display(Graphics2D g2) {
         // BACKGROUND CONFIGURATION
         g2.drawImage(BACKGROUND, getBgOffset(), 0, null);
@@ -178,20 +181,13 @@ public class GamePanel extends JPanel {
         for (EnemyBullet enBulls : enBullets) {
             enBulls.draw(g2);
         }
-        
-        //DRAW GAME STATE VARIABLES
-        for(int i = 0; i<=player.HEALTH;i++){
-            LifeState heart = new LifeState();
-            heart.positionX+=offset;
-            health.add(heart);
-            if(offset < 60){
-                offset += 50;
-            }
-        }
-        for(LifeState heart: health){
+
+        // DRAW GAME STATE VARIABLES
+        for (LifeState heart : health) {
             heart.draw(g2);
         }
 
+        score.draw(g2);
     }
 
     // COLLISON / DELETION FUNCTION
@@ -220,6 +216,13 @@ public class GamePanel extends JPanel {
         for (EnemyBullet enBullet : enBullets) {
             if (enBullet.intersects(player)) {
                 enBullet.hit = true;
+                player.HEALTH -= 1;
+                if (player.HEALTH > -1) {
+                    health.removeLast();
+                }
+                if(player.HEALTH == 0){
+                    gameOver();
+                }
             }
         }
 
@@ -294,6 +297,23 @@ public class GamePanel extends JPanel {
         }
     }
 
+    // HEALTH DISPLAY CONFIGURATION
+    // for heart position
+    int offset = 0;
+    private void heartsInt() {
+        if (health.size() < 3) {
+            for (int i = player.HEALTH; i >= 1; i--) {
+                LifeState heart = new LifeState();
+                heart.positionX += offset;
+                health.add(heart);
+                if (offset < 60) {
+                    offset += 50;
+                }
+            }
+        }
+        System.out.print(health.size() + "");
+    }
+
     // METHOD FOR PLAYER POWER UPS PANEL CONFIGURATION
     private void intPlayerUps() {
         int OFFSET = 2;
@@ -338,6 +358,10 @@ public class GamePanel extends JPanel {
                 }
             }
         }
+    }
+    //METHOD FOR GAMEOVER CONFIGURATIOM
+    private void gameOver(){
+        JOptionPane.showMessageDialog(null, "Game over");
     }
 
     // METHOD FOR POWER UPS CONFIGURATION
