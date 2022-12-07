@@ -15,4 +15,6 @@ A ghost shooting game
 - [x] Scoring
 - [x] Game state
 - [x] Player game over three lifes
+- [ ] Add intro
+- [ ] Audios
 - [ ] Add more types of enemies

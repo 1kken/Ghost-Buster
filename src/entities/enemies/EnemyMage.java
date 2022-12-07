@@ -19,8 +19,8 @@ public class EnemyMage extends Enemy {
         this.xSpeed = 13;
         this.x = xDirect();
         this.y = yLevel();
-        this.width = 32;
-        this.height = 32;
+        this.width = 60;
+        this.height = 60;
     }
 
     @Override

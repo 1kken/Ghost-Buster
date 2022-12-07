@@ -1,6 +1,7 @@
 package entities.player;
 
 import java.awt.*;
+import javax.swing.ImageIcon;
 import frame.GamePanel;
 
 public class Player extends Rectangle {
@@ -8,7 +9,7 @@ public class Player extends Rectangle {
     public int NUMOFBULLETS = 1;
     public int HEALTH = 3;
     public int SCORE = 0; 
-
+    Image image = new ImageIcon(this.getClass().getResource("resource/player.gif")).getImage();
     int speed = 0;
     public int maxSpeed = 4;
 
@@ -20,7 +21,7 @@ public class Player extends Rectangle {
     }
 
     public void draw(Graphics2D g) {
-        g.fillRect(this.x, this.y, width, height);
+        g.drawImage(image,this.x,this.y,null);
     }
 
     public void update() {

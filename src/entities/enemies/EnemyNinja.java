@@ -19,8 +19,8 @@ public class EnemyNinja extends Enemy {
         this.xSpeed = 4;
         this.x = xDirect();
         this.y = yLevel();
-        this.width = 64;
-        this.height = 64;
+        this.width = 120;
+        this.height = 120;
     }
 
     @Override
