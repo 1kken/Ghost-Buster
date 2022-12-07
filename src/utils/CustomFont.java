@@ -1,6 +1,5 @@
 package utils;
 import java.awt.*;
-import java.io.File;
 import java.io.InputStream;
 public class CustomFont {
    public static Font customFont; 
