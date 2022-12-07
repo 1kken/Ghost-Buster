@@ -1,10 +1,10 @@
 package frame;
-import java.awt.Dimension;
 
 import javax.swing.JFrame;
 public class Frame extends JFrame  {
+    GamePanel gamePanel = new GamePanel();
+    GameOver gameOver = new GameOver();
     public Frame(){
-      GamePanel gamePanel = new GamePanel();
       gamePanel.setFocusable(true);
       this.add(gamePanel);
       this.setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -12,5 +12,5 @@ public class Frame extends JFrame  {
       this.setVisible(true);
       this.pack();
       this.setLocationRelativeTo(null);
-    } 
+    }
 }

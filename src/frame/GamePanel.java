@@ -24,6 +24,7 @@ import utils.PowerUps;
 
 public class GamePanel extends JPanel {
     // SCREEN SIZE & BACKGROUND & etc..
+    Font customFont = CustomFont.load(60);
     Image BACKGROUND;
     Image AIM;
     Image GROUND;
@@ -31,6 +32,7 @@ public class GamePanel extends JPanel {
     public static final int SCREEN_HEIGHT = 768;
 
     // GAME STATE VARIABLES
+    public static boolean gameOver = false;
     // FRAMES ARE LIKE A TIMER BUT GLOBAL
     Timer game_loop;
     public int FRAME;
@@ -76,9 +78,8 @@ public class GamePanel extends JPanel {
         // CAST GRAPHIC OBJECT TO GRAPHICS 2D
         Graphics2D g2 = (Graphics2D) g;
 
-        //set a global custom font
-        g2.setFont(CustomFont.load(60));
-
+        //SET G@ CHARACTERISTICS
+        g2.setFont(customFont);
         g2.setColor(Color.white);
         display(g2);
     }
@@ -93,6 +94,10 @@ public class GamePanel extends JPanel {
         addKeyListener(new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent e) {
+                if(gameOver == true){
+                    if(e.getKeyChar() == 'y' || e.getKeyChar() == 'Y'){
+                        reset();
+                    }                }
             }
         });
 
@@ -117,7 +122,7 @@ public class GamePanel extends JPanel {
             FRAME += 1;
             Control.getMousePosition(GamePanel.this);
 
-            // ENEMY INTITAILZAITION AND CONFIGURATION
+            // ENEMY INTITAILZA/ITION AND CONFIGURATION
             enemyInt();
 
             // PLAYER POWER UPS CONFIGURATION
@@ -129,9 +134,22 @@ public class GamePanel extends JPanel {
             // INT POWER UPS
             intPowerUps();
 
+            //COLLISON DETECTION
             collides();
+
+            //SCORE DEDUCTION METHOD
+            penalty();
+
+            //GAME OVER METHOD
+            gameOver();
+
+            //UPDATE PLAYER POSITION
             player.update();
+
+            // CLEAR MEMORY(OBVIOUSLY FOR PERFORMANCE)
             clear();
+
+            //REPAINT THE PANEL
             repaint();
         }
     }
@@ -157,6 +175,7 @@ public class GamePanel extends JPanel {
         // BACKGROUND CONFIGURATION
         g2.drawImage(BACKGROUND, getBgOffset(), 0, null);
         g2.drawImage(GROUND, 0, SCREEN_HEIGHT - 125, null);
+        
         // DRAW ENEMIES
         for (Enemy enemy : enemies) {
             enemy.draw(g2);
@@ -191,8 +210,14 @@ public class GamePanel extends JPanel {
         for (LifeState heart : health) {
             heart.draw(g2);
         }
-
+        //DRAW SCORE
         score.draw(g2);
+
+        //DRAW GAME OVER
+        if(gameOver == true){
+            game_loop.stop();
+            new GameOver().draw(g2);
+        }
     }
 
     // COLLISON / DELETION FUNCTION
@@ -201,7 +226,7 @@ public class GamePanel extends JPanel {
         for (Enemy enemy : enemies) {
             for (Bullet bullet : bullets) {
                 if (bullet.intersects(enemy)) {
-                    updateScore(enemy.getType());
+                    updateScore(enemy.getType(),enemy.getPoints());
                     enemy.isAlive = false;
                     bullet.hit = true;
                 }
@@ -226,9 +251,6 @@ public class GamePanel extends JPanel {
                 if (player.HEALTH > -1) {
                     health.removeLast();
                 }
-                if(player.HEALTH == 0){
-                    gameOver();
-                }
             }
         }
 
@@ -237,7 +259,7 @@ public class GamePanel extends JPanel {
             if (powerUp.intersects(player)) {
                 if (powerUp.powUp == PowerUps.MOVEMENTSPEED) {
                     powerUp.picked = true;
-                    if (player.maxSpeed < 5) {
+                    if (player.maxSpeed < 10) {
                         player.maxSpeed += 1;
                     }
                 }
@@ -367,7 +389,32 @@ public class GamePanel extends JPanel {
     }
     //METHOD FOR GAMEOVER CONFIGURATIOM
     private void gameOver(){
-        JOptionPane.showMessageDialog(null, "Game over");
+        if(player.HEALTH < 1 || player.SCORE < 0){
+            gameOver = true; 
+        }
+    }
+
+    //RESET WHEN PLAYER PRESS RETRY
+    private void reset(){
+        player.HEALTH = 3;
+        player.NUMOFBULLETS = 1;
+        player.SCORE = 0;
+        player.maxSpeed =  4;
+        clearScreen();
+        heartsInt();
+        System.out.println(player.HEALTH + "");
+        gameOver = false;
+        game_loop.restart();
+    }
+
+    //RESET SCREEN
+    private void clearScreen(){
+        enemies.clear();
+        enBullets.clear();
+        friends.clear();
+        bullets.clear();
+        powerUps.clear();
+        health.clear();
     }
 
     // METHOD FOR POWER UPS CONFIGURATION
@@ -378,13 +425,13 @@ public class GamePanel extends JPanel {
     }
 
     //METHOD FOR SCORING CONFIGURATION
-    private void updateScore(String type){
+    private void updateScore(String type, int points){
         if(type.equals("MAGE")){
-            player.SCORE += 250;
+            player.SCORE += points ;
         }
 
         if(type.equals("NINJA")){
-            player.SCORE += 150;
+            player.SCORE += points;
         }
     }
 
@@ -394,10 +441,19 @@ public class GamePanel extends JPanel {
         return ran.nextFloat();
     }
 
+    //METHOD FOR DECREMENTING SCORE
+    private void penalty(){
+        final int MINIMUM = -100;
+        for(Enemy enemy: enemies){
+            if(enemy.x < MINIMUM || enemy.x > SCREEN_WIDTH){
+                player.SCORE -= enemy.getPoints();        
+            }
+        }
+    }
+
     // MEMORY CLEANING
     private void clear() {
         final int MINIMUM = -100;
-
         bullets.removeIf(en -> en.y < MINIMUM || en.y > SCREEN_HEIGHT || en.x < MINIMUM || en.x > SCREEN_WIDTH);
         enemies.removeIf(en -> en.x < MINIMUM || en.x > SCREEN_WIDTH);
         enBullets.removeIf(en -> en.y < MINIMUM || en.y > SCREEN_HEIGHT || en.x < MINIMUM || en.x > SCREEN_WIDTH);

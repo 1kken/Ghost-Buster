@@ -13,6 +13,8 @@ public class CustomFont {
             {
                 customFont = Font.createFont(Font.TRUETYPE_FONT, fontStream);
                 customFont = customFont.deriveFont((float) fontSize);
+                GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+                ge.registerFont(customFont);
                 return customFont;
             } catch (Exception e) 
             {

@@ -13,6 +13,7 @@ import frame.GamePanel;
 
 public class EnemyMage extends Enemy {
     Image image = new ImageIcon(this.getClass().getResource("resource/ghostMage_right.gif")).getImage();
+    int POINTS = 250;
     String TYPE = "MAGE";
     public EnemyMage(){
         this.xSpeed = 13;
@@ -65,5 +66,10 @@ public class EnemyMage extends Enemy {
     @Override
     public String getType() {
         return this.TYPE;
+    }
+
+    @Override
+    public int getPoints() {
+        return this.POINTS;
     }
 }

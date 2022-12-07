@@ -17,5 +17,10 @@ public abstract class Enemy extends Rectangle {
     //FIRE /  SHOOT BULLETS
     public abstract EnemyBullet shoot(int x, int y);
 
+    //GETTER METHOD FOR TYPE
     public abstract String getType();
+
+    //GETTER METHOD FOR POINTS
+    public abstract int getPoints();
+
 }
