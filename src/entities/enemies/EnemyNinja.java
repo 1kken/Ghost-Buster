@@ -16,7 +16,7 @@ public class EnemyNinja extends Enemy {
     int POINTS = 150;
     String TYPE = "NINJA";
     public EnemyNinja() {
-        this.xSpeed = 5;
+        this.xSpeed = 3;
         this.x = xDirect();
         this.y = yLevel();
         this.width = 64;

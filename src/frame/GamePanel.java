@@ -24,6 +24,7 @@ import utils.PowerUps;
 
 public class GamePanel extends JPanel {
     // SCREEN SIZE & BACKGROUND & etc..
+    JFrame ancestorFrame;
     Font customFont = CustomFont.load(60);
     Image BACKGROUND;
     Image AIM;
@@ -71,6 +72,7 @@ public class GamePanel extends JPanel {
 
         // HEALTH DISPLAY
         heartsInt();
+
     }
 
     // PAINT METHOD FOR EVERY COMPONENTS
@@ -97,6 +99,8 @@ public class GamePanel extends JPanel {
                 if (gameOver == true) {
                     if (e.getKeyChar() == 'y' || e.getKeyChar() == 'Y') {
                         reset();
+                    }else if(e.getKeyChar() == 'n' || e.getKeyChar() == 'N'){
+                        ancestorFrame.dispose();
                     }
                 }
             }
@@ -216,6 +220,7 @@ public class GamePanel extends JPanel {
 
         // DRAW GAME OVER
         if (gameOver == true) {
+            ancestorFrame = (JFrame) SwingUtilities.getWindowAncestor(this);
             game_loop.stop();
             new GameOver().draw(g2);
         }

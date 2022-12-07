@@ -12,5 +12,7 @@ public class GameOver extends JPanel {
 
     public void draw(Graphics g) {
         g.drawString("GAME OVER!", 500, 350);
+        g.drawString("retry?", 560, 430);
+        g.drawString("y/n", 600, 500);
     }
 }
