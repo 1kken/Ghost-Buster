@@ -2,6 +2,8 @@ package frame;
 
 // JAVA UTILITIES IMPORT
 import java.awt.event.*;
+
+import javax.sound.sampled.Clip;
 import javax.swing.*;
 import java.util.LinkedList;
 import java.util.Random;
@@ -20,6 +22,7 @@ import entities.player.Player;
 import frame.gameStateVariables.LifeState;
 import frame.gameStateVariables.PlayerState;
 import frame.gameStateVariables.Score;
+import utils.Audios;
 import utils.CustomFont;
 import utils.PowerUps;
 
@@ -33,10 +36,13 @@ public class GamePanel extends JPanel {
     Image GROUND;
     public static final int SCREEN_WIDTH = 1366;
     public static final int SCREEN_HEIGHT = 768;
+    //FOR SOUND EFFECTS
+    Clip shootClip;
 
     // GAME STATE VARIABLES
     public static boolean gameOver = false;
     PlayerState playerState;
+    boolean paused = false;
     // FRAMES ARE LIKE A TIMER BUT GLOBAL
     Timer game_loop;
     public int FRAME;
@@ -59,6 +65,9 @@ public class GamePanel extends JPanel {
 
     // ====GAME CONSTRUCTOR=====//
     public GamePanel() {
+        //INTITIALIZE SOUNDS
+        intSounds();
+
         // INITIALIZE IMAGES
         initImages();
 
@@ -100,10 +109,19 @@ public class GamePanel extends JPanel {
         addKeyListener(new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent e) {
+                if(e.getKeyChar() == ' '){
+                    if(paused == false){
+                        paused = true;
+                        game_loop.stop();
+                    }else{
+                        game_loop.start();
+                        paused = false;
+                    }
+                }
                 if (gameOver == true) {
                     if (e.getKeyChar() == 'y' || e.getKeyChar() == 'Y') {
                         reset();
-                    }else if(e.getKeyChar() == 'n' || e.getKeyChar() == 'N'){
+                    } else if (e.getKeyChar() == 'n' || e.getKeyChar() == 'N') {
                         ancestorFrame.dispose();
                     }
                 }
@@ -115,11 +133,14 @@ public class GamePanel extends JPanel {
             @Override
             public void mousePressed(MouseEvent e) {
                 SHOOT = 1;
+                shootClip.loop(-1);
+                shootClip.start();
             }
 
             @Override
             public void mouseReleased(MouseEvent e) {
                 SHOOT = 0;
+                shootClip.stop();
             }
         });
     }
@@ -222,7 +243,6 @@ public class GamePanel extends JPanel {
         // DRAW SCORE
         score.draw(g2);
 
-
         // DRAW GAME OVER
         if (gameOver == true) {
             ancestorFrame = (JFrame) SwingUtilities.getWindowAncestor(this);
@@ -230,8 +250,8 @@ public class GamePanel extends JPanel {
             new GameOver().draw(g2);
         }
 
-        //DRAW PLAYER STATUS
-        playerState = new PlayerState(player.maxSpeed,player.NUMOFBULLETS);
+        // DRAW PLAYER STATUS
+        playerState = new PlayerState(player.maxSpeed, player.NUMOFBULLETS);
         playerState.draw(g2);
     }
 
@@ -345,15 +365,14 @@ public class GamePanel extends JPanel {
     int offset = 0;
 
     private void heartsInt() {
-            for (int i = player.HEALTH; i >= 1; i--) {
-                LifeState heart = new LifeState();
-                heart.positionX += offset;
-                health.add(heart);
-                if (offset < 60) {
-                    offset += 50;
-                }
+        for (int i = player.HEALTH; i >= 1; i--) {
+            LifeState heart = new LifeState();
+            heart.positionX += offset;
+            health.add(heart);
+            if (offset < 60) {
+                offset += 50;
             }
-        System.out.print(health.size() + "");
+        }
     }
 
     // METHOD FOR PLAYER POWER UPS PANEL CONFIGURATION
@@ -464,6 +483,15 @@ public class GamePanel extends JPanel {
             if (enemy.x < MINIMUM || enemy.x > SCREEN_WIDTH) {
                 player.SCORE -= enemy.getPoints();
             }
+        }
+    }
+
+    //METHOD FOR SOUND CONFIGURATION
+    private void intSounds(){
+        try {
+           shootClip = Audios.getAudio("resource/bullet.wav"); 
+        } catch (Exception e) {
+            System.out.println(e+"");
         }
     }
 
