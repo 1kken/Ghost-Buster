@@ -111,21 +111,22 @@ public class GamePanel extends JPanel {
         addKeyListener(new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent e) {
-                if (e.getKeyChar() == ' ') {
-                    if (paused == false) {
-                        paused = true;
-                    } else {
-                        game_loop.start();
-                        gamePauseClip.stop();
-                        paused = false;
-                    }
-                }
                 if (gameOver == true) {
                     if (e.getKeyChar() == 'y' || e.getKeyChar() == 'Y') {
                         gameOverClip.stop();
                         reset();
                     } else if (e.getKeyChar() == 'n' || e.getKeyChar() == 'N') {
                         ancestorFrame.dispose();
+                    }
+                } else {
+                    if (e.getKeyChar() == ' ') {
+                        if (paused == false) {
+                            paused = true;
+                        } else {
+                            game_loop.start();
+                            gamePauseClip.stop();
+                            paused = false;
+                        }
                     }
                 }
             }
@@ -135,9 +136,11 @@ public class GamePanel extends JPanel {
         addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
-                SHOOT = 1;
-                shootClip.loop(-1);
-                shootClip.start();
+                if (gameOver == false && paused == false) {
+                    SHOOT = 1;
+                    shootClip.loop(-1);
+                    shootClip.start();
+                }
             }
 
             @Override
@@ -253,7 +256,7 @@ public class GamePanel extends JPanel {
                 game_loop.stop();
                 new GameOver().draw(g2);
             }
-            if(paused == true){
+            if (paused == true) {
                 game_loop.stop();
                 backgroundClip.stop();
                 gamePauseClip.loop(-1);
@@ -452,24 +455,24 @@ public class GamePanel extends JPanel {
                 gameOverClip.loop(-1);
                 gameOverClip.start();
             }
-            backgroundClip.loop(-1);
-            backgroundClip.start();
         } else {
             backgroundClip.stop();
             gameOverClip.loop(-1);
             gameOverClip.start();
         }
     }
-    //METHOD FOR GAME PAUSED CONFIGURATION
+
+    // METHOD FOR GAME PAUSED CONFIGURATION
     // RESET WHEN PLAYER PRESS RETRY
     private void reset() {
+        FRAME = 0;
         player.HEALTH = 3;
         player.NUMOFBULLETS = 1;
         player.SCORE = 0;
         player.maxSpeed = 4;
         clearScreen();
         heartsInt();
-        System.out.println(player.HEALTH + "");
+        intSounds();
         gameOver = false;
         game_loop.restart();
     }

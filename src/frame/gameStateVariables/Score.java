@@ -8,7 +8,7 @@ public class Score extends StateVariable {
 
     @Override
     public void draw(Graphics2D g) {
-        g.drawString(GamePanel.player.SCORE + "", 630, this.positionY + 60);
+        g.drawString(GamePanel.player.SCORE + "", 600, this.positionY + 60);
     }
 
 }
