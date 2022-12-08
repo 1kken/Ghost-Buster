@@ -11,10 +11,13 @@ A ghost shooting game
 - [x] Enemy shooting pattern
 - [x] Friendly GHOST that drop power ups
 - [x] Add enemy sprites 
-- [x] Power up Speed up, multi shot
+- [ ] Power up Speed up, multi shot *bullet speed
 - [x] Scoring
 - [x] Game state
 - [x] Player game over three lifes
+- [x] Pause implimentation
+- [ ] Audios *still needs hero hit sound
 - [ ] Add intro
-- [ ] Audios
-- [ ] Add more types of enemies
+- [ ] Add kamikazee type
+- [ ] Add menu 
+- [ ] Fix the code
