@@ -14,7 +14,8 @@ public class Audios {
         "src/utils/resource/bullet.wav",
         "src/utils/resource/bgMusic.wav",
         "src/utils/resource/dyingGhost.wav",
-        "src/utils/resource/gameOver.wav"
+        "src/utils/resource/gameOver.wav",
+        "src/utils/resource/gamePaused.wav",
     };
     public static Clip clip;
     static AudioInputStream audioInputStream;

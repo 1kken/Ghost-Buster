@@ -40,6 +40,7 @@ public class GamePanel extends JPanel {
     Clip shootClip;
     Clip backgroundClip;
     Clip gameOverClip;
+    Clip gamePauseClip;
     LinkedList<Clip> ghostClips = new LinkedList<Clip>();
 
     // GAME STATE VARIABLES
@@ -94,8 +95,7 @@ public class GamePanel extends JPanel {
     public void paint(Graphics g) {
         // CAST GRAPHIC OBJECT TO GRAPHICS 2D
         Graphics2D g2 = (Graphics2D) g;
-
-        // SET G@ CHARACTERISTICS
+        // SET G2 CHARACTERISTICS
         g2.setFont(customFont);
         g2.setColor(Color.white);
         display(g2);
@@ -114,9 +114,9 @@ public class GamePanel extends JPanel {
                 if (e.getKeyChar() == ' ') {
                     if (paused == false) {
                         paused = true;
-                        game_loop.stop();
                     } else {
                         game_loop.start();
+                        gamePauseClip.stop();
                         paused = false;
                     }
                 }
@@ -184,14 +184,6 @@ public class GamePanel extends JPanel {
 
             // REPAINT THE PANEL
             repaint();
-            if (!gameOver == true) {
-                backgroundClip.loop(-1);
-                backgroundClip.start();
-            } else {
-                backgroundClip.stop();
-                gameOverClip.loop(-1);
-                gameOverClip.start();
-            }
         }
     }
 
@@ -255,10 +247,19 @@ public class GamePanel extends JPanel {
         score.draw(g2);
 
         // DRAW GAME OVER
-        if (gameOver == true) {
-            ancestorFrame = (JFrame) SwingUtilities.getWindowAncestor(this);
-            game_loop.stop();
-            new GameOver().draw(g2);
+        if (gameOver == true || paused == true) {
+            if (gameOver == true) {
+                ancestorFrame = (JFrame) SwingUtilities.getWindowAncestor(this);
+                game_loop.stop();
+                new GameOver().draw(g2);
+            }
+            if(paused == true){
+                game_loop.stop();
+                backgroundClip.stop();
+                gamePauseClip.loop(-1);
+                gamePauseClip.start();
+                new GamePause().draw(g2);
+            }
         }
 
         // DRAW PLAYER STATUS
@@ -437,13 +438,29 @@ public class GamePanel extends JPanel {
         }
     }
 
-    // METHOD FOR GAMEOVER CONFIGURATIOM
+    // METHOD FOR GAMEOVER CONFIGURATION
     private void gameOver() {
         if (player.HEALTH < 1 || player.SCORE < 0) {
             gameOver = true;
         }
+        if (!gameOver == true) {
+            if (!gameOver == true) {
+                backgroundClip.loop(-1);
+                backgroundClip.start();
+            } else {
+                backgroundClip.stop();
+                gameOverClip.loop(-1);
+                gameOverClip.start();
+            }
+            backgroundClip.loop(-1);
+            backgroundClip.start();
+        } else {
+            backgroundClip.stop();
+            gameOverClip.loop(-1);
+            gameOverClip.start();
+        }
     }
-
+    //METHOD FOR GAME PAUSED CONFIGURATION
     // RESET WHEN PLAYER PRESS RETRY
     private void reset() {
         player.HEALTH = 3;
@@ -508,11 +525,13 @@ public class GamePanel extends JPanel {
             shootClip = Audios.getAudio(0);
             backgroundClip = Audios.getAudio(1);
             gameOverClip = Audios.getAudio(3);
+            gamePauseClip = Audios.getAudio(4);
         } catch (Exception e) {
             System.out.println(e + "");
         }
     }
 
+    // GHOST DYING SOUND CONFIG
     private void intDyingGhost() {
         try {
             ghostClips.add(Audios.getAudio(2));
