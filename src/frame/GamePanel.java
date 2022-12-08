@@ -36,8 +36,11 @@ public class GamePanel extends JPanel {
     Image GROUND;
     public static final int SCREEN_WIDTH = 1366;
     public static final int SCREEN_HEIGHT = 768;
-    //FOR SOUND EFFECTS
+    // FOR SOUND EFFECTS
     Clip shootClip;
+    Clip backgroundClip;
+    Clip gameOverClip;
+    LinkedList<Clip> ghostClips = new LinkedList<Clip>();
 
     // GAME STATE VARIABLES
     public static boolean gameOver = false;
@@ -65,7 +68,7 @@ public class GamePanel extends JPanel {
 
     // ====GAME CONSTRUCTOR=====//
     public GamePanel() {
-        //INTITIALIZE SOUNDS
+        // INTITIALIZE SOUNDS
         intSounds();
 
         // INITIALIZE IMAGES
@@ -84,7 +87,6 @@ public class GamePanel extends JPanel {
 
         // HEALTH DISPLAY
         heartsInt();
-
 
     }
 
@@ -109,17 +111,18 @@ public class GamePanel extends JPanel {
         addKeyListener(new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent e) {
-                if(e.getKeyChar() == ' '){
-                    if(paused == false){
+                if (e.getKeyChar() == ' ') {
+                    if (paused == false) {
                         paused = true;
                         game_loop.stop();
-                    }else{
+                    } else {
                         game_loop.start();
                         paused = false;
                     }
                 }
                 if (gameOver == true) {
                     if (e.getKeyChar() == 'y' || e.getKeyChar() == 'Y') {
+                        gameOverClip.stop();
                         reset();
                     } else if (e.getKeyChar() == 'n' || e.getKeyChar() == 'N') {
                         ancestorFrame.dispose();
@@ -181,6 +184,14 @@ public class GamePanel extends JPanel {
 
             // REPAINT THE PANEL
             repaint();
+            if (!gameOver == true) {
+                backgroundClip.loop(-1);
+                backgroundClip.start();
+            } else {
+                backgroundClip.stop();
+                gameOverClip.loop(-1);
+                gameOverClip.start();
+            }
         }
     }
 
@@ -264,6 +275,11 @@ public class GamePanel extends JPanel {
                     updateScore(enemy.getType(), enemy.getPoints());
                     enemy.isAlive = false;
                     bullet.hit = true;
+                    // THIS METHOD ADDS A SOUND OF DYING GHOST IN THE LinkedList
+                    intDyingGhost();
+                    for (Clip sound : ghostClips) {
+                        sound.start();
+                    }
                 }
             }
         }
@@ -486,12 +502,22 @@ public class GamePanel extends JPanel {
         }
     }
 
-    //METHOD FOR SOUND CONFIGURATION
-    private void intSounds(){
+    // METHOD FOR SOUND CONFIGURATION
+    private void intSounds() {
         try {
-           shootClip = Audios.getAudio("resource/bullet.wav"); 
+            shootClip = Audios.getAudio(0);
+            backgroundClip = Audios.getAudio(1);
+            gameOverClip = Audios.getAudio(3);
         } catch (Exception e) {
-            System.out.println(e+"");
+            System.out.println(e + "");
+        }
+    }
+
+    private void intDyingGhost() {
+        try {
+            ghostClips.add(Audios.getAudio(2));
+        } catch (Exception e) {
+            System.out.println(e + "");
         }
     }
 
@@ -501,5 +527,6 @@ public class GamePanel extends JPanel {
         bullets.removeIf(en -> en.y < MINIMUM || en.y > SCREEN_HEIGHT || en.x < MINIMUM || en.x > SCREEN_WIDTH);
         enemies.removeIf(en -> en.x < MINIMUM || en.x > SCREEN_WIDTH);
         enBullets.removeIf(en -> en.y < MINIMUM || en.y > SCREEN_HEIGHT || en.x < MINIMUM || en.x > SCREEN_WIDTH);
+        ghostClips.removeIf(en -> en.isRunning() == false);
     }
 }
