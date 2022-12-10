@@ -42,6 +42,8 @@ public class GamePanel extends JPanel {
     Clip gameOverClip;
     Clip gamePauseClip;
     LinkedList<Clip> ghostClips = new LinkedList<Clip>();
+    LinkedList<Clip> loseHList = new LinkedList<Clip>();
+    LinkedList<Clip> getPList = new LinkedList<Clip>();
 
     // GAME STATE VARIABLES
     public static boolean gameOver = false;
@@ -302,6 +304,12 @@ public class GamePanel extends JPanel {
         for (EnemyBullet enBullet : enBullets) {
             if (enBullet.intersects(player)) {
                 enBullet.hit = true;
+                // FOR SOUND
+                intLoseHealth();
+                for (Clip sound : loseHList) {
+                    sound.start();
+                }
+                ;
                 player.HEALTH -= 1;
                 if (player.HEALTH > -1) {
                     health.removeLast();
@@ -314,6 +322,12 @@ public class GamePanel extends JPanel {
             if (powerUp.intersects(player)) {
                 if (powerUp.powUp == PowerUps.MOVEMENTSPEED) {
                     powerUp.picked = true;
+                    // FOR SOUND
+                   intPowerUp(); 
+                    for (Clip sound : getPList) {
+                        sound.start();
+                    }
+                    ;
                     if (player.maxSpeed < 10) {
                         player.maxSpeed += 1;
                     }
@@ -530,7 +544,7 @@ public class GamePanel extends JPanel {
             gameOverClip = Audios.getAudio(3);
             gamePauseClip = Audios.getAudio(4);
         } catch (Exception e) {
-            System.out.println(e + "");
+            e.printStackTrace();
         }
     }
 
@@ -543,6 +557,24 @@ public class GamePanel extends JPanel {
         }
     }
 
+    // GET POWER UP SOUND CONFIG
+    private void intPowerUp() {
+        try {
+            getPList.add(Audios.getAudio(5));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    // LOSING HEALTH SOUND CONFIG
+    private void intLoseHealth() {
+        try {
+            loseHList.add(Audios.getAudio(6));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     // MEMORY CLEANING
     private void clear() {
         final int MINIMUM = -100;
@@ -550,5 +582,7 @@ public class GamePanel extends JPanel {
         enemies.removeIf(en -> en.x < MINIMUM || en.x > SCREEN_WIDTH);
         enBullets.removeIf(en -> en.y < MINIMUM || en.y > SCREEN_HEIGHT || en.x < MINIMUM || en.x > SCREEN_WIDTH);
         ghostClips.removeIf(en -> en.isRunning() == false);
+        getPList.removeIf(en -> en.isRunning() == false);
+        loseHList.removeIf(en -> en.isRunning() == false);
     }
 }

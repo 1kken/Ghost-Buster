@@ -16,6 +16,8 @@ public class Audios {
         "src/utils/resource/dyingGhost.wav",
         "src/utils/resource/gameOver.wav",
         "src/utils/resource/gamePaused.wav",
+        "src/utils/resource/getPower.wav",
+        "src/utils/resource/loseHealth.wav",
     };
     public static Clip clip;
     static AudioInputStream audioInputStream;
