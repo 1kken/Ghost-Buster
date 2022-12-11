@@ -54,7 +54,7 @@ public class EnemyNinja extends Enemy {
         Random rand = new Random();
         int level = 0;
         while(level < 201){
-            level = rand.nextInt(351);
+            level = rand.nextInt(400);
         }
         return level;
     }

@@ -56,7 +56,7 @@ public class EnemyMage extends Enemy {
         Random rand = new Random();
         int level = 0;
         while (level < 50) {
-            level = rand.nextInt(250);
+            level = rand.nextInt(300);
         }
         return level;
     }
