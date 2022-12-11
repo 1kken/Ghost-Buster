@@ -452,6 +452,10 @@ public class GamePanel extends JPanel {
                     friend.dropped = true;
                 }
             }
+            System.out.println((int) friend.getX() + "");
+            if(x == 156 && friend.dropped == false){
+                powerUps.add(friend.spawnPowUp(x, y));
+            }
         }
     }
 
@@ -581,6 +585,7 @@ public class GamePanel extends JPanel {
         bullets.removeIf(en -> en.y < MINIMUM || en.y > SCREEN_HEIGHT || en.x < MINIMUM || en.x > SCREEN_WIDTH);
         enemies.removeIf(en -> en.x < MINIMUM || en.x > SCREEN_WIDTH);
         enBullets.removeIf(en -> en.y < MINIMUM || en.y > SCREEN_HEIGHT || en.x < MINIMUM || en.x > SCREEN_WIDTH);
+        friends.removeIf(en -> en.getX() < 0);
         ghostClips.removeIf(en -> en.isRunning() == false);
         getPList.removeIf(en -> en.isRunning() == false);
         loseHList.removeIf(en -> en.isRunning() == false);
