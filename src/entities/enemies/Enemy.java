@@ -22,4 +22,7 @@ public abstract class Enemy extends Rectangle {
 
     // GETTER METHOD FOR POINTS
     public abstract int getPoints();
+
+    //GET HEALTH
+    public abstract int intHit(int damage);
 }

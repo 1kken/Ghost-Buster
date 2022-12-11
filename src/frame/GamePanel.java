@@ -67,6 +67,7 @@ public class GamePanel extends JPanel {
     LinkedList<LifeState> health = new LinkedList<LifeState>();
 
     // PLAYER MOUSE POSITION
+    final int DAMAGE = 10;
     public static int aimLocX = 0;
     public static int aimLocY = 0;
 
@@ -191,8 +192,8 @@ public class GamePanel extends JPanel {
             // REPAINT THE PANEL
             repaint();
 
-            //MAKE THE GAME HARDER every 15 secs has passed 900 ticks/ms
-            if(FRAME % 900 == 0){
+            // MAKE THE GAME HARDER every 15 secs has passed 900 ticks/ms
+            if (FRAME % 900 == 0) {
                 incDifficulty();
             }
         }
@@ -284,14 +285,16 @@ public class GamePanel extends JPanel {
         for (Enemy enemy : enemies) {
             for (Bullet bullet : bullets) {
                 if (bullet.intersects(enemy)) {
-                    updateScore(enemy.getType(), enemy.getPoints());
-                    enemy.isAlive = false;
-                    bullet.hit = true;
-                    // THIS METHOD ADDS A SOUND OF DYING GHOST IN THE LinkedList
-                    intDyingGhost();
-                    for (Clip sound : ghostClips) {
-                        sound.start();
+                    if (enemy.intHit(DAMAGE) == 0) {
+                        updateScore(enemy.getType(), enemy.getPoints());
+                        enemy.isAlive = false;
+                        //THIS IS FOR THE AUDIO
+                        intDyingGhost();
+                        for (Clip sound : ghostClips) {
+                            sound.start();
+                        }
                     }
+                    bullet.hit = true;
                 }
             }
         }
@@ -374,15 +377,15 @@ public class GamePanel extends JPanel {
         // RATE OF ENEMY SPAWNS
         // MAGE TYPE
         if (FRAME % 90 == 0) {
-            //ENEMY SPAWN DEPENDSNAT ON CURRENT LEVEL
-            for(int i = level; i>=0; i--){
+            // ENEMY SPAWN DEPENDSNAT ON CURRENT LEVEL
+            for (int i = level; i >= 0; i--) {
                 enemies.add(new EnemyMage(level));
             }
         }
         // ASSASIN TYPE
-        if (FRAME % (90/2) == 0) {
-            //ENEMY SPAWN DEPENDSNAT ON CURRENT LEVEL
-            for(int o = level; o>=0; o--){
+        if (FRAME % (90 / 2) == 0) {
+            // ENEMY SPAWN DEPENDSNAT ON CURRENT LEVEL
+            for (int o = level; o >= 0; o--) {
                 enemies.add(new EnemyNinja(level));
             }
         }
@@ -602,7 +605,7 @@ public class GamePanel extends JPanel {
         if (enemyBulletRate > 10) {
             this.enemyBulletRate -= 10;
         }
-        level +=1;
+        level += 1;
     }
 
     // MEMORY CLEANING

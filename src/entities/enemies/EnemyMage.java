@@ -1,7 +1,6 @@
 package entities.enemies;
 
 import java.awt.Graphics2D;
-import java.lang.System.Logger.Level;
 import java.util.Random;
 
 import javax.swing.ImageIcon;
@@ -15,6 +14,7 @@ import frame.GamePanel;
 public class EnemyMage extends Enemy {
     Image image = new ImageIcon(this.getClass().getResource("resource/ghostMage_right.gif")).getImage();
     int POINTS = 250;
+    int HEALTH = 10;
     String TYPE = "MAGE";
 
     public EnemyMage(int level) {
@@ -75,4 +75,11 @@ public class EnemyMage extends Enemy {
     public int getPoints() {
         return this.POINTS;
     }
+
+    @Override
+    public int intHit(int damage) {
+        this.HEALTH -= damage;
+        return HEALTH; 
+    }
+
 }

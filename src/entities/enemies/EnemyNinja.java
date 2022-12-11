@@ -14,6 +14,7 @@ import frame.GamePanel;
 public class EnemyNinja extends Enemy {
     Image image = new ImageIcon(this.getClass().getResource("resource/ghostNinja_right.gif")).getImage();
     int POINTS = 150;
+    int HEALTH = 20;
     String TYPE = "NINJA";
     public EnemyNinja(int level) {
         this.xSpeed += 1 + level;
@@ -73,4 +74,11 @@ public class EnemyNinja extends Enemy {
     public int getPoints() {
         return this.POINTS;
     }
+
+    @Override
+    public int intHit(int damage) {
+        this.HEALTH -= damage;
+        return HEALTH; 
+    }
+
 }
