@@ -49,6 +49,7 @@ public class GamePanel extends JPanel {
     public static boolean gameOver = false;
     PlayerState playerState;
     boolean paused = false;
+    int level = 0;
     // FRAMES ARE LIKE A TIMER BUT GLOBAL
     Timer game_loop;
     public int FRAME;
@@ -189,6 +190,11 @@ public class GamePanel extends JPanel {
 
             // REPAINT THE PANEL
             repaint();
+
+            //MAKE THE GAME HARDER every 15 secs has passed 900 ticks/ms
+            if(FRAME % 900 == 0){
+                incDifficulty();
+            }
         }
     }
 
@@ -323,7 +329,7 @@ public class GamePanel extends JPanel {
                 if (powerUp.powUp == PowerUps.MOVEMENTSPEED) {
                     powerUp.picked = true;
                     // FOR SOUND
-                   intPowerUp(); 
+                    intPowerUp();
                     for (Clip sound : getPList) {
                         sound.start();
                     }
@@ -361,15 +367,18 @@ public class GamePanel extends JPanel {
     }
 
     // ENEMY CONFIGURATION AND SPAWNING METHOD
+    int spawnRate = 90;
+    int enemyBulletRate = 60;
+
     private void enemyInt() {
         // RATE OF ENEMY SPAWNS
         // MAGE TYPE
         if (FRAME % 90 == 0) {
-            enemies.add(new EnemyMage());
+            enemies.add(new EnemyMage(level));
         }
         // ASSASIN TYPE
-        if (FRAME % 90 == 0) {
-            enemies.add(new EnemyNinja());
+        if (FRAME % (90/2) == 0) {
+            enemies.add(new EnemyNinja(level));
         }
 
         // UPDATE ENEMY POSITION
@@ -452,8 +461,7 @@ public class GamePanel extends JPanel {
                     friend.dropped = true;
                 }
             }
-            System.out.println((int) friend.getX() + "");
-            if(x == 156 && friend.dropped == false){
+            if (x == 156 && friend.dropped == false) {
                 powerUps.add(friend.spawnPowUp(x, y));
             }
         }
@@ -577,6 +585,18 @@ public class GamePanel extends JPanel {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    // THIS METHOD MAKES THE GAME HARDER depends on the level
+    private void incDifficulty() {
+        // increase spawning rate
+        if (spawnRate > 10) {
+            this.spawnRate -= 10;
+        }
+        if (enemyBulletRate > 10) {
+            this.enemyBulletRate -= 10;
+        }
+        level +=1;
     }
 
     // MEMORY CLEANING

@@ -15,8 +15,8 @@ public class EnemyNinja extends Enemy {
     Image image = new ImageIcon(this.getClass().getResource("resource/ghostNinja_right.gif")).getImage();
     int POINTS = 150;
     String TYPE = "NINJA";
-    public EnemyNinja() {
-        this.xSpeed = 4;
+    public EnemyNinja(int level) {
+        this.xSpeed += 2 + level;
         this.x = xDirect();
         this.y = yLevel();
         this.width = 120;

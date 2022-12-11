@@ -6,7 +6,7 @@ import entities.enemies.enemyBullets.EnemyBullet;
 
 public abstract class Enemy extends Rectangle {
     public boolean isAlive = true;
-    int xSpeed = 4;
+    public int xSpeed = 5;
     int ySpeed = 4;
 
     public abstract void draw(Graphics2D g);
@@ -14,13 +14,12 @@ public abstract class Enemy extends Rectangle {
     // MOVEMENT OF GHOST
     public abstract void update();
 
-    //FIRE /  SHOOT BULLETS
+    // FIRE / SHOOT BULLETS
     public abstract EnemyBullet shoot(int x, int y);
 
-    //GETTER METHOD FOR TYPE
+    // GETTER METHOD FOR TYPE
     public abstract String getType();
 
-    //GETTER METHOD FOR POINTS
+    // GETTER METHOD FOR POINTS
     public abstract int getPoints();
-
 }
