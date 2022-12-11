@@ -18,7 +18,7 @@ public class EnemyMage extends Enemy {
     String TYPE = "MAGE";
 
     public EnemyMage(int level) {
-        this.xSpeed += 8 + level;
+        this.xSpeed += 7 + level;
         this.x = xDirect();
         this.y = yLevel();
         this.width = 60;

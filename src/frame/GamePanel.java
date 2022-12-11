@@ -374,11 +374,17 @@ public class GamePanel extends JPanel {
         // RATE OF ENEMY SPAWNS
         // MAGE TYPE
         if (FRAME % 90 == 0) {
-            enemies.add(new EnemyMage(level));
+            //ENEMY SPAWN DEPENDSNAT ON CURRENT LEVEL
+            for(int i = level; i>=0; i--){
+                enemies.add(new EnemyMage(level));
+            }
         }
         // ASSASIN TYPE
         if (FRAME % (90/2) == 0) {
-            enemies.add(new EnemyNinja(level));
+            //ENEMY SPAWN DEPENDSNAT ON CURRENT LEVEL
+            for(int o = level; o>=0; o--){
+                enemies.add(new EnemyNinja(level));
+            }
         }
 
         // UPDATE ENEMY POSITION
